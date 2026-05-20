@@ -694,8 +694,11 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
+    const { initFooterPreviewPage } = await import('../blocks/footer/footer.js');
+    initFooterPreviewPage(main);
     document.body.classList.add('appear');
-    await loadSection(main.querySelector('.section'), waitForFirstImage);
+    const firstSection = main.querySelector('.footer-content .section, main > .section');
+    await loadSection(firstSection, waitForFirstImage);
   }
 
   try {
@@ -727,16 +730,18 @@ async function loadLazy(doc) {
     }
   }
 
-  if (main && /\/footer\/?$/.test(window.location.pathname)) {
-    const { applyFooterSectionClasses } = await import('../blocks/footer/footer.js');
-    applyFooterSectionClasses(main);
-  }
+  const { initFooterPreviewPage, isFooterPage } = await import('../blocks/footer/footer.js');
+  if (main) initFooterPreviewPage(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadFooter(doc.querySelector('footer'));
+  if (!isFooterPage()) {
+    loadFooter(doc.querySelector('footer'));
+  } else {
+    doc.querySelector('footer')?.remove();
+  }
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
