@@ -14,6 +14,7 @@ import {
   decorateFeatureGrid,
   decorateMain,
   decorateSectionLayouts,
+  decorateEvents,
   decorateWeddings,
 } from './scripts.js';
 
@@ -134,12 +135,21 @@ decorateRichtext();
 const main = document.querySelector('main');
 if (main) {
   const runLayoutDecoration = () => {
+    if (/\/events\/?$/.test(window.location.pathname)) {
+      document.body.classList.add('events');
+      loadCSS(`${window.hlx.codeBasePath}/styles/events.css`);
+    }
     decorateFeatureGrid(main);
     decorateSectionLayouts(main);
     if (/\/weddings\/?$/.test(window.location.pathname)) {
       document.body.classList.add('weddings');
       loadCSS(`${window.hlx.codeBasePath}/styles/weddings.css`);
       decorateWeddings(main);
+    }
+    if (/\/events\/?$/.test(window.location.pathname)) {
+      document.body.classList.add('events');
+      loadCSS(`${window.hlx.codeBasePath}/styles/events.css`);
+      decorateEvents(main);
     }
   };
   if (document.readyState === 'complete') runLayoutDecoration();

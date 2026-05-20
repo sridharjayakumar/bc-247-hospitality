@@ -674,8 +674,180 @@ export function decorateSectionLayouts(main) {
 /** @deprecated Use decorateSectionLayouts */
 export const decorateDining = decorateSectionLayouts;
 
-/** @deprecated Use decorateSectionLayouts */
-export const decorateEvents = decorateSectionLayouts;
+const BENTO_LIST_ICONS = {
+  restaurant: 'fa-utensils',
+  local_bar: 'fa-wine-glass',
+  cake: 'fa-cake-candles',
+};
+
+const EVENTS_FEATURE_ICONS = ['fa-heart', 'fa-camera'];
+
+/**
+ * Meetings & Events page — DOM enhancements for Stitch layout.
+ * @param {Element} main
+ */
+export function decorateEvents(main) {
+  const hero = main.querySelector('.section.hero .hero');
+  if (hero && !hero.querySelector('.events-hero-scroll')) {
+    const copy = hero.querySelector(':scope > div:last-child > div');
+    if (copy) {
+      const scroll = document.createElement('button');
+      scroll.type = 'button';
+      scroll.className = 'events-hero-scroll';
+      scroll.setAttribute('aria-label', 'Scroll to venues');
+      const icon = document.createElement('i');
+      icon.className = 'fa-solid fa-angles-down';
+      icon.setAttribute('aria-hidden', 'true');
+      scroll.append(icon);
+      scroll.addEventListener('click', () => {
+        document.getElementById('venues')?.scrollIntoView({ behavior: 'smooth' });
+      });
+      copy.append(scroll);
+    }
+  }
+
+  const venuesSection = main.querySelector('.section.wide:has(.cards)');
+  if (venuesSection) {
+    venuesSection.classList.add('events-venues');
+    venuesSection.id = 'venues';
+    const wrapper = getSectionWrapper(venuesSection);
+    if (wrapper && !wrapper.querySelector('.venues-header')) {
+      const eyebrowEl = wrapper.querySelector('.section-eyebrow');
+      const h2 = wrapper.querySelector('h2');
+      const divider = wrapper.querySelector('.section-divider');
+      if (eyebrowEl && h2) {
+        const header = document.createElement('div');
+        header.className = 'venues-header';
+        const eyebrowP = eyebrowEl.closest('p');
+        if (eyebrowP) header.append(eyebrowP);
+        else header.append(eyebrowEl);
+        header.append(h2);
+        if (divider) header.append(divider.closest('hr') || divider);
+        wrapper.insertBefore(header, wrapper.firstChild);
+      }
+    }
+    venuesSection.querySelectorAll('.cards-card-body').forEach((body) => {
+      const titleP = body.querySelector('.cards-card-title, p:has(strong)');
+      const strong = titleP?.querySelector('strong');
+      if (!strong || titleP.querySelector('h3')) return;
+      const h3 = document.createElement('h3');
+      h3.textContent = strong.textContent;
+      const titleWrap = document.createElement('div');
+      titleWrap.className = 'cards-card-title';
+      titleWrap.append(h3);
+      titleP.replaceWith(titleWrap);
+    });
+    venuesSection.querySelectorAll('a.cards-card-cta').forEach((link) => {
+      if (link.querySelector('.fa-arrow-right')) return;
+      const arrow = document.createElement('i');
+      arrow.className = 'fa-solid fa-arrow-right';
+      arrow.setAttribute('aria-hidden', 'true');
+      link.append(arrow);
+    });
+  }
+
+  const bentoSection = main.querySelector('.section.bento-mosaic');
+  if (bentoSection) {
+    bentoSection.classList.add('events-services');
+    const wrapper = getSectionWrapper(bentoSection);
+    const header = bentoSection.querySelector('.bento-mosaic-header');
+    const eyebrowEl = wrapper?.querySelector('.section-eyebrow');
+    if (header && eyebrowEl && !header.querySelector('.section-eyebrow')) {
+      const eyebrowP = eyebrowEl.closest('p');
+      if (eyebrowP) header.prepend(eyebrowP);
+      else header.prepend(eyebrowEl);
+    }
+
+    bentoSection.querySelectorAll('.bento-mosaic-tile').forEach((tile) => {
+      const imgHost = [...tile.children].find((el) => el.querySelector?.('picture, img'));
+      if (!imgHost || tile.querySelector('.bento-mosaic-tile-media')) return;
+      const media = document.createElement('div');
+      media.className = 'bento-mosaic-tile-media';
+      const copy = document.createElement('div');
+      copy.className = 'bento-mosaic-tile-copy';
+      media.append(imgHost);
+      [...tile.children].filter((el) => el !== imgHost).forEach((el) => copy.append(el));
+      tile.replaceChildren(media, copy);
+    });
+
+    bentoSection.querySelectorAll('.bento-mosaic-tile-copy ul li').forEach((li) => {
+      if (li.querySelector('.bento-list-icon')) return;
+      const raw = li.textContent.trim();
+      const [iconKey, ...rest] = raw.split(/\s+/);
+      const label = rest.join(' ').trim();
+      if (!label || !BENTO_LIST_ICONS[iconKey]) return;
+      const icon = document.createElement('i');
+      icon.className = `bento-list-icon fa-solid ${BENTO_LIST_ICONS[iconKey]}`;
+      icon.setAttribute('aria-hidden', 'true');
+      li.textContent = '';
+      li.append(icon, document.createTextNode(label));
+    });
+
+    const accent = bentoSection.querySelector('.bento-mosaic-accent');
+    if (accent && !accent.querySelector('.bento-accent-icon')) {
+      const icon = document.createElement('i');
+      icon.className = 'bento-accent-icon fa-solid fa-sliders';
+      icon.setAttribute('aria-hidden', 'true');
+      accent.prepend(icon);
+    }
+
+    const bar = bentoSection.querySelector('.bento-mosaic-bar');
+    if (bar && !bar.querySelector('.events-concierge-avatars')) {
+      const avatars = document.createElement('div');
+      avatars.className = 'events-concierge-avatars';
+      avatars.setAttribute('aria-hidden', 'true');
+      for (let i = 0; i < 3; i += 1) {
+        const circle = document.createElement('span');
+        circle.className = 'events-concierge-avatar';
+        avatars.append(circle);
+      }
+      bar.append(avatars);
+    }
+  }
+
+  const weddingsSection = main.querySelector('.section.split-reverse');
+  if (weddingsSection) {
+    weddingsSection.classList.add('events-weddings');
+    const media = weddingsSection.querySelector('.split-media');
+    if (media && !media.querySelector('.split-media-inner')) {
+      const inner = document.createElement('div');
+      inner.className = 'split-media-inner';
+      const backdrop = document.createElement('div');
+      backdrop.className = 'events-weddings-backdrop';
+      backdrop.setAttribute('aria-hidden', 'true');
+      [...media.children].forEach((el) => inner.append(el));
+      media.replaceChildren(backdrop, inner);
+    }
+    weddingsSection.querySelectorAll('.split-features > div').forEach((block, index) => {
+      if (block.querySelector('.split-feature-icon')) return;
+      const icon = document.createElement('i');
+      icon.className = `split-feature-icon fa-solid ${EVENTS_FEATURE_ICONS[index] || 'fa-heart'}`;
+      icon.setAttribute('aria-hidden', 'true');
+      block.prepend(icon);
+    });
+  }
+
+  const inquirySection = main.querySelector('.section.narrow:has(.events-inquiry-form)');
+  if (inquirySection) {
+    inquirySection.classList.add('events-inquiry');
+    inquirySection.id = 'inquire';
+    const wrapper = getSectionWrapper(inquirySection);
+    if (wrapper && !wrapper.querySelector('.events-inquiry-card')) {
+      const card = document.createElement('div');
+      card.className = 'events-inquiry-card';
+      const header = document.createElement('div');
+      header.className = 'events-inquiry-header';
+      const h2 = wrapper.querySelector('h2');
+      const lead = wrapper.querySelector('.events-inquiry-lead');
+      const form = wrapper.querySelector('.events-inquiry-form');
+      if (h2) header.append(h2);
+      if (lead) header.append(lead);
+      card.append(header);
+      if (form) card.append(form);
+      wrapper.replaceChildren(card);
+    }
+  }
+}
 
 /**
  * Decorates the main element.
@@ -695,9 +867,15 @@ export function decorateMain(main) {
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
+const isEventsPage = () => /\/events\/?$/.test(window.location.pathname);
+
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  if (isEventsPage()) {
+    document.body.classList.add('events');
+    loadCSS(`${window.hlx.codeBasePath}/styles/events.css`);
+  }
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
@@ -734,6 +912,9 @@ async function loadLazy(doc) {
       document.body.classList.add('weddings');
       loadCSS(`${window.hlx.codeBasePath}/styles/weddings.css`);
       decorateWeddings(main);
+    }
+    if (isEventsPage()) {
+      decorateEvents(main);
     }
   }
 

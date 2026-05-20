@@ -1,0 +1,750 @@
+/* Meetings & Events — Stitch mock (code.html) */
+/* stylelint-disable no-descending-specificity */
+
+body.events {
+  --events-primary: #2c3e50;
+  --events-primary-hover: #1a252f;
+  --events-surface: #f7f9ff;
+  --events-surface-low: #edf4ff;
+  --events-surface-dim: #cbdcef;
+  --events-on-surface: #1c1b1b;
+  --events-muted: #4d4639;
+  --events-outline: #7e7667;
+  --events-border: rgb(208 197 180 / 20%);
+  --events-container: 1280px;
+  --events-gutter: 24px;
+}
+
+body.events {
+  background-color: var(--events-surface);
+  color: var(--events-on-surface);
+}
+
+/* —— Hero (819px, coastal gradient, scroll cue) —— */
+body.events main > .section.hero {
+  margin-top: calc(-1 * var(--nav-height));
+  padding: 0;
+}
+
+body.events main > .section.hero > .hero-wrapper {
+  max-width: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+body.events .section.hero .hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: min(819px, 92vh);
+  max-height: none;
+  padding: calc(var(--nav-height) + 4rem) 20px 4rem;
+  overflow: hidden;
+}
+
+@media (width >= 900px) {
+  body.events .section.hero .hero {
+    padding-inline: 64px;
+  }
+}
+
+body.events .section.hero .hero::after {
+  background: linear-gradient(to bottom, rgb(44 62 80 / 50%) 0%, rgb(44 62 80 / 10%) 100%);
+}
+
+body.events .section.hero .hero > div:first-child {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+body.events .section.hero .hero > div:first-child picture {
+  position: absolute;
+  inset: 0;
+}
+
+body.events .section.hero .hero > div:last-child {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 56rem;
+  text-align: center;
+}
+
+body.events .section.hero .hero h1 {
+  margin: 0 0 1.5rem;
+  font-family: var(--brand-font-family);
+  font-size: clamp(2.5rem, 6vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+body.events .section.hero .hero > div:last-child > div > p:first-of-type:not(.events-hero-scroll) {
+  max-width: 42rem;
+  margin: 0 auto;
+  font-family: var(--body-font-family);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: normal;
+  color: #fff;
+  opacity: 0.9;
+}
+
+body.events .section.hero .events-hero-scroll {
+  display: block;
+  margin: 2.5rem auto 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 2.25rem;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  animation: events-hero-bounce 2s ease-in-out infinite;
+}
+
+@keyframes events-hero-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* —— Venues —— */
+body.events .section.events-venues {
+  margin: 0;
+  padding: 96px 20px;
+  background-color: var(--events-surface);
+}
+
+@media (width >= 900px) {
+  body.events .section.events-venues {
+    padding-inline: 64px;
+  }
+}
+
+body.events .section.events-venues > div {
+  max-width: var(--events-container);
+  margin: 0 auto;
+  padding: 0;
+}
+
+body.events .events-venues .venues-header {
+  max-width: 48rem;
+  margin: 0 auto 4rem;
+  text-align: center;
+}
+
+body.events .events-venues .venues-header .section-eyebrow {
+  display: block;
+  margin-bottom: 1rem;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--events-primary);
+}
+
+body.events .events-venues .venues-header h2 {
+  margin: 0 0 1.5rem;
+  font-family: var(--brand-font-family);
+  font-size: clamp(1.75rem, 3vw, 2rem);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--events-on-surface);
+}
+
+body.events .events-venues .venues-header .section-divider {
+  width: 4rem;
+  height: 1px;
+  margin: 0 auto;
+  border: 0;
+  background-color: var(--events-primary);
+}
+
+body.events .events-venues .cards.gallery > ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--events-gutter);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (width >= 900px) {
+  body.events .events-venues .cards.gallery > ul {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+  }
+
+  body.events .events-venues .cards.gallery > ul > li:nth-child(2) {
+    margin-top: 3rem;
+  }
+}
+
+body.events .events-venues .cards.gallery > ul > li {
+  position: relative;
+  min-height: unset;
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px solid var(--events-border);
+  box-shadow: none;
+  transform: none;
+}
+
+body.events .events-venues .cards.gallery > ul > li:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+body.events .events-venues .cards.gallery .cards-card-image {
+  position: relative;
+  inset: unset;
+  z-index: 0;
+  aspect-ratio: 4 / 5;
+}
+
+body.events .events-venues .cards.gallery .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+body.events .events-venues .cards.gallery > ul > li:hover .cards-card-image img {
+  transform: scale(1.05);
+}
+
+body.events .events-venues .cards.gallery .cards-card-body {
+  position: relative;
+  inset: unset;
+  padding: 2.5rem;
+  background: #fff;
+  color: var(--events-on-surface);
+}
+
+body.events .events-venues .cards.gallery .cards-card-body p {
+  color: var(--events-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+body.events .events-venues .cards.gallery .cards-card-title {
+  margin: 0 0 1rem;
+}
+
+body.events .events-venues .cards.gallery .cards-card-title h3 {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+  color: var(--events-on-surface);
+}
+
+body.events .events-venues .cards.gallery a.cards-card-cta:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--events-primary);
+  transition: gap 0.3s ease;
+}
+
+body.events .events-venues .cards.gallery a.cards-card-cta:hover {
+  gap: 0.75rem;
+  color: var(--events-primary-hover);
+}
+
+/* —— Bento services —— */
+body.events .section.bento-mosaic.events-services {
+  margin: 0;
+  padding: 96px 20px;
+  background-color: var(--events-surface-low);
+  border-block: 1px solid var(--events-border);
+}
+
+@media (width >= 900px) {
+  body.events .section.bento-mosaic.events-services {
+    padding-inline: 64px;
+  }
+}
+
+body.events .section.bento-mosaic.events-services > div {
+  max-width: var(--events-container);
+  margin: 0 auto;
+  padding: 0;
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-header {
+  margin-bottom: 4rem;
+  text-align: left;
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-header .section-eyebrow {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--events-primary);
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-header h2 {
+  margin: 0;
+  font-family: var(--brand-font-family);
+  font-size: clamp(1.75rem, 3vw, 2rem);
+  font-weight: 600;
+  color: var(--events-on-surface);
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-grid {
+  gap: var(--events-gutter);
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-tile {
+  padding: 3rem;
+  background-color: #fff;
+  border: 1px solid rgb(208 197 180 / 10%);
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-tile-media img {
+  min-height: 220px;
+  filter: grayscale(20%);
+  transition: filter 0.5s ease;
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-tile:hover .bento-mosaic-tile-media img {
+  filter: grayscale(0);
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-tile-copy h3 {
+  margin: 0 0 1rem;
+  font-family: var(--body-font-family);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-tile-copy p {
+  margin: 0 0 1.5rem;
+  color: var(--events-muted);
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-tile-copy ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-tile-copy li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--events-muted);
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-tile-copy .bento-list-icon {
+  font-size: 1.25rem;
+  color: var(--events-primary);
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-accent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem;
+  background-color: var(--events-primary);
+  border: none;
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-accent .bento-accent-icon {
+  display: block;
+  margin-bottom: 2rem;
+  font-size: 3rem;
+  color: #fff;
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-accent h3,
+body.events .section.bento-mosaic.events-services .bento-mosaic-accent p {
+  color: #fff;
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-accent p {
+  opacity: 0.9;
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-accent a {
+  display: block;
+  margin-top: 3rem;
+  padding: 1rem 0;
+  border: 1px solid rgb(255 255 255 / 30%);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-accent a:hover {
+  background-color: #fff;
+  color: var(--events-primary);
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-bar {
+  padding: 3rem;
+  background-color: var(--events-surface-dim);
+  border: 1px solid rgb(208 197 180 / 10%);
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-bar h3 {
+  margin: 0 0 0.5rem;
+  font-family: var(--body-font-family);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-bar p {
+  max-width: 36rem;
+  margin: 0;
+  color: var(--events-muted);
+}
+
+body.events .section.bento-mosaic.events-services .bento-mosaic-bar {
+  flex-wrap: wrap;
+}
+
+@media (width >= 900px) {
+  body.events .section.bento-mosaic.events-services .bento-mosaic-bar {
+    flex-wrap: nowrap;
+  }
+}
+
+body.events .section.bento-mosaic.events-services .events-concierge-avatars {
+  display: flex;
+  margin-top: 2rem;
+}
+
+@media (width >= 900px) {
+  body.events .section.bento-mosaic.events-services .events-concierge-avatars {
+    margin-top: 0;
+  }
+}
+
+body.events .section.bento-mosaic.events-services .events-concierge-avatar {
+  display: block;
+  width: 4rem;
+  height: 4rem;
+  border: 4px solid var(--events-surface);
+  border-radius: 50%;
+  margin-left: -1rem;
+  background: linear-gradient(135deg, #8b9cb3 0%, #5d6d82 100%);
+}
+
+body.events .section.bento-mosaic.events-services .events-concierge-avatar:first-child {
+  margin-left: 0;
+}
+
+/* —— Weddings feature —— */
+body.events .section.events-weddings {
+  margin: 0;
+  padding: 8rem 20px;
+  overflow: hidden;
+  background-color: var(--events-surface);
+}
+
+@media (width >= 900px) {
+  body.events .section.events-weddings {
+    padding-inline: 64px;
+  }
+}
+
+body.events .section.events-weddings > div {
+  max-width: var(--events-container);
+  margin: 0 auto;
+  padding: 0;
+}
+
+body.events .section.events-weddings .split-grid {
+  gap: 5rem;
+  align-items: center;
+}
+
+body.events .section.events-weddings .split-media {
+  position: relative;
+}
+
+body.events .section.events-weddings .split-media-inner {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 4 / 5;
+  border: 16px solid var(--events-surface);
+  box-shadow: 0 25px 50px rgb(0 0 0 / 15%);
+  overflow: hidden;
+}
+
+body.events .section.events-weddings .split-media-inner picture,
+body.events .section.events-weddings .split-media-inner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+body.events .section.events-weddings .events-weddings-backdrop {
+  position: absolute;
+  top: -2.5rem;
+  left: -2.5rem;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(203 220 239 / 30%);
+  transform: translate(1rem, 1rem);
+  pointer-events: none;
+}
+
+body.events .section.events-weddings .split-copy .section-eyebrow {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--events-primary);
+}
+
+body.events .section.events-weddings .split-copy h2 {
+  margin: 0 0 2rem;
+  font-family: var(--brand-font-family);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+body.events .section.events-weddings .split-copy > p {
+  margin: 0 0 2rem;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--events-muted);
+}
+
+body.events .section.events-weddings .split-features {
+  gap: 1.5rem;
+  margin: 0 0 3rem;
+}
+
+body.events .section.events-weddings .split-features > div {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+body.events .section.events-weddings .split-feature-icon {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  font-size: 1.5rem;
+  color: var(--events-primary);
+}
+
+body.events .section.events-weddings .split-features h4 {
+  margin: 0 0 0.35rem;
+  font-family: var(--body-font-family);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--events-primary);
+}
+
+body.events .section.events-weddings .split-features p {
+  margin: 0;
+  color: var(--events-muted);
+}
+
+body.events .section.events-weddings .button-container a.button {
+  padding: 1rem 2.5rem;
+  border: none;
+  background-color: var(--events-on-surface);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--events-surface);
+  transition: background-color 0.3s ease;
+}
+
+body.events .section.events-weddings .button-container a.button:hover {
+  background-color: var(--events-primary);
+  border-color: var(--events-primary);
+  color: #fff;
+}
+
+/* —— Inquiry —— */
+body.events .section.events-inquiry {
+  margin: 0;
+  padding: 96px 20px;
+  background-color: var(--events-surface-dim);
+}
+
+@media (width >= 900px) {
+  body.events .section.events-inquiry {
+    padding-inline: 64px;
+  }
+}
+
+body.events .section.events-inquiry > div {
+  max-width: var(--events-container);
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  text-align: left;
+}
+
+/* Reset global narrow CTA band styles */
+body.events .section.events-inquiry:not(:has(.narrow-list)) {
+  padding: 96px 20px;
+  background-color: var(--events-surface-dim);
+}
+
+body.events .section.events-inquiry:not(:has(.narrow-list)) > div {
+  max-width: var(--events-container);
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  text-align: left;
+}
+
+body.events .section.events-inquiry .events-inquiry-card {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  background-color: var(--events-surface);
+  border: 1px solid var(--events-border);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 8%);
+}
+
+@media (width >= 900px) {
+  body.events .section.events-inquiry .events-inquiry-card {
+    padding: 5rem;
+  }
+}
+
+body.events .section.events-inquiry .events-inquiry-header {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+body.events .section.events-inquiry .events-inquiry-header h2 {
+  margin: 0 0 1rem;
+  font-family: var(--brand-font-family);
+  font-size: clamp(1.75rem, 3vw, 2rem);
+  font-weight: 600;
+}
+
+body.events .section.events-inquiry .events-inquiry-lead {
+  margin: 0;
+  color: var(--events-muted);
+}
+
+body.events .events-inquiry-form {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (width >= 900px) {
+  body.events .events-inquiry-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  body.events .events-inquiry-field-wide,
+  body.events .events-inquiry-submit {
+    grid-column: 1 / -1;
+  }
+}
+
+body.events .events-inquiry-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--events-muted);
+}
+
+body.events .events-inquiry-field :is(input, select, textarea) {
+  width: 100%;
+  padding: 0.5rem 0;
+  border: none;
+  border-bottom: 1px solid var(--events-outline);
+  background: transparent;
+  font-family: var(--body-font-family);
+  font-size: 1rem;
+  color: var(--events-on-surface);
+}
+
+body.events .events-inquiry-field :is(input, select, textarea):focus {
+  outline: none;
+  border-bottom-color: var(--events-primary);
+}
+
+body.events .events-inquiry-field-wide {
+  margin-top: 0.5rem;
+}
+
+body.events .events-inquiry-submit {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+body.events .events-inquiry-submit button {
+  width: 100%;
+  padding: 1rem 4rem;
+  border: none;
+  background-color: var(--events-primary);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+@media (width >= 900px) {
+  body.events .events-inquiry-submit button {
+    width: auto;
+  }
+}
+
+body.events .events-inquiry-submit button:hover {
+  background-color: var(--events-primary-hover);
+}
