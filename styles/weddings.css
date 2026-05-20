@@ -1,0 +1,684 @@
+/* Weddings page — Stitch mockup (Albergo Pacifica) */
+/* stylelint-disable no-descending-specificity */
+
+body.weddings {
+  --weddings-primary: #715915;
+  --weddings-primary-container: #8c712c;
+  --weddings-on-primary-container: #fffbff;
+  --weddings-surface: #fcf9f8;
+  --weddings-surface-low: #f6f3f2;
+  --weddings-outline: #d0c5b4;
+  --weddings-muted: #4d4639;
+  --weddings-dark: #1c1b1b;
+}
+
+/* —— Hero: full-viewport coastal ceremony —— */
+body.weddings main > .section.hero {
+  margin-top: calc(-1 * var(--nav-height));
+  padding: 0;
+}
+
+body.weddings main > .section.hero > .hero-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+body.weddings .section.hero .hero {
+  min-height: min(95vh, 900px);
+  max-height: none;
+  padding: calc(var(--nav-height) + 4rem) 1.5rem 4rem;
+  align-items: center;
+  justify-content: center;
+}
+
+body.weddings .section.hero .hero::after {
+  background: linear-gradient(to bottom, rgb(0 0 0 / 20%) 0%, rgb(0 0 0 / 40%) 100%);
+}
+
+body.weddings .section.hero .hero h1 {
+  margin-bottom: 2rem;
+  font-family: var(--brand-font-family);
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+}
+
+body.weddings .section.hero .hero > div:last-child > div > p:first-of-type:not(.weddings-hero-ctas) {
+  max-width: 48rem;
+  margin: 0 auto 3.5rem;
+  font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+  line-height: 1.6;
+  letter-spacing: normal;
+  opacity: 0.9;
+}
+
+body.weddings .section.hero .hero .weddings-hero-ctas {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+@media (width >= 600px) {
+  body.weddings .section.hero .hero .weddings-hero-ctas {
+    flex-direction: row;
+  }
+}
+
+body.weddings .section.hero .hero .weddings-hero-ctas a.button {
+  margin: 0;
+  padding: 1.25rem 3rem;
+  border: 2px solid transparent;
+  border-radius: 0;
+  background-color: var(--weddings-dark);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: var(--weddings-surface);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 15%);
+  transition: opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+body.weddings .section.hero .hero .weddings-hero-ctas a.button:hover {
+  opacity: 0.9;
+  background-color: var(--weddings-dark);
+  border-color: transparent;
+  color: var(--weddings-surface);
+}
+
+body.weddings .section.hero .hero .weddings-hero-ctas a.button.secondary {
+  background-color: transparent;
+  border-color: #fff;
+  color: #fff;
+  box-shadow: none;
+}
+
+body.weddings .section.hero .hero .weddings-hero-ctas a.button.secondary:hover {
+  background-color: rgb(255 255 255 / 10%);
+  color: #fff;
+}
+
+@media (width >= 900px) {
+  body.weddings .section.hero .hero {
+    min-height: min(95vh, 800px);
+    padding: calc(var(--nav-height) + 5rem) 2rem 5rem;
+  }
+
+  body.weddings .section.hero .hero h1 {
+    font-size: 4rem;
+  }
+}
+
+/* —— Venues: editorial 2-up cards —— */
+body.weddings main .section.wide.weddings-venues {
+  padding: 8rem 0;
+  background-color: var(--weddings-surface);
+}
+
+body.weddings .section.wide.weddings-venues > div {
+  max-width: 90rem;
+}
+
+body.weddings .section.wide.weddings-venues > div > p:has(.section-eyebrow),
+body.weddings .section.wide.weddings-venues > div > .section-intro {
+  text-align: center;
+}
+
+body.weddings .section.wide.weddings-venues > div > h2 {
+  margin: 0 auto 5rem;
+  text-align: center;
+  font-family: var(--brand-font-family);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--weddings-dark);
+}
+
+body.weddings .section.wide .cards.weddings-venues-cards > ul {
+  grid-template-columns: 1fr;
+  gap: 5rem;
+}
+
+@media (width >= 900px) {
+  body.weddings .section.wide .cards.weddings-venues-cards > ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5rem;
+  }
+}
+
+body.weddings .cards.weddings-venues-cards > ul > li {
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+body.weddings .cards.weddings-venues-cards > ul > li:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+body.weddings .cards.weddings-venues-cards .cards-card-image {
+  position: relative;
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+}
+
+body.weddings .cards.weddings-venues-cards .cards-card-image img {
+  aspect-ratio: 4 / 5;
+  transition: transform 1s ease;
+}
+
+body.weddings .cards.weddings-venues-cards > ul > li:hover .cards-card-image img {
+  transform: scale(1.05);
+}
+
+body.weddings .cards.weddings-venues-cards .venue-tag {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 2;
+  margin: 0;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid rgb(208 197 180 / 30%);
+  background: rgb(252 249 248 / 95%);
+  backdrop-filter: blur(12px);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--weddings-primary);
+}
+
+body.weddings .cards.weddings-venues-cards .cards-card-body {
+  position: static;
+  padding: 0;
+  background: none;
+}
+
+body.weddings .cards.weddings-venues-cards .cards-card-body h3 {
+  margin: 0 0 1.25rem;
+  font-family: var(--brand-font-family);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--weddings-dark);
+}
+
+body.weddings .cards.weddings-venues-cards .cards-card-body > p:not(.venue-capacity) {
+  max-width: 42rem;
+  margin: 0 0 2rem;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--weddings-muted);
+}
+
+body.weddings .cards.weddings-venues-cards .venue-capacity {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin: 0;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid rgb(208 197 180 / 30%);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--weddings-dark);
+}
+
+body.weddings .cards.weddings-venues-cards .venue-capacity-icon {
+  font-size: 1.75rem;
+  color: var(--weddings-primary);
+}
+
+body.weddings .cards.weddings-venues-cards .venue-capacity a:any-link {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-decoration: none;
+  color: inherit;
+}
+
+body.weddings .cards.weddings-venues-cards .venue-capacity a:any-link:hover {
+  color: var(--weddings-primary);
+}
+
+/* —— Amenities: bento intro + 2×2 cards —— */
+body.weddings main .section.weddings-amenities {
+  padding: 8rem 0;
+  background-color: var(--weddings-surface-low);
+}
+
+body.weddings .section.weddings-amenities > div {
+  max-width: 90rem;
+}
+
+body.weddings .section.weddings-amenities .weddings-amenities-layout {
+  display: grid;
+  gap: 4rem;
+}
+
+@media (width >= 900px) {
+  body.weddings .section.weddings-amenities .weddings-amenities-layout {
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    align-items: start;
+  }
+}
+
+body.weddings .section.weddings-amenities .weddings-amenities-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+body.weddings .section.weddings-amenities .weddings-amenities-intro h2 {
+  margin: 0 0 2rem;
+  text-align: left;
+  font-family: var(--brand-font-family);
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+body.weddings .section.weddings-amenities .weddings-amenities-intro .feature-grid-lead {
+  margin: 0;
+  max-width: none;
+  text-align: left;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--weddings-muted);
+}
+
+body.weddings .section.weddings-amenities .feature-grid-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin: 0;
+}
+
+@media (width >= 600px) {
+  body.weddings .section.weddings-amenities .feature-grid-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+body.weddings .section.weddings-amenities .amenity {
+  align-items: flex-start;
+  padding: 3rem;
+  border: 1px solid rgb(208 197 180 / 30%);
+  background-color: var(--weddings-surface);
+  text-align: left;
+  transition: box-shadow 0.5s ease;
+}
+
+body.weddings .section.weddings-amenities .amenity:hover {
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 15%);
+}
+
+body.weddings .section.weddings-amenities .amenity-icon {
+  width: auto;
+  height: auto;
+  margin: 0 0 2rem;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font-size: 3rem;
+  color: var(--weddings-primary);
+  transition: transform 0.3s ease;
+}
+
+body.weddings .section.weddings-amenities .amenity:hover .amenity-icon {
+  background: none;
+  color: var(--weddings-primary);
+  transform: scale(1.1);
+}
+
+body.weddings .section.weddings-amenities .amenity h4 {
+  margin-bottom: 1.25rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+body.weddings .section.weddings-amenities .amenity .amenity-desc {
+  max-width: none;
+  font-size: 1.125rem;
+  opacity: 0.8;
+}
+
+/* —— Culinary: split with 3:4 image + feature list —— */
+body.weddings main .section.weddings-culinary {
+  padding: 8rem 0;
+  background-color: var(--weddings-surface);
+}
+
+body.weddings .section.weddings-culinary > div {
+  max-width: 90rem;
+}
+
+body.weddings .section.weddings-culinary .split-grid {
+  gap: 6rem;
+}
+
+body.weddings .section.weddings-culinary .split-media {
+  position: relative;
+}
+
+body.weddings .section.weddings-culinary .split-media::after {
+  content: '';
+  position: absolute;
+  right: -3rem;
+  bottom: -3rem;
+  z-index: -1;
+  width: 16rem;
+  height: 16rem;
+  border-radius: 50%;
+  background: rgb(113 89 21 / 5%);
+  pointer-events: none;
+}
+
+body.weddings .section.weddings-culinary .split-media img {
+  aspect-ratio: 3 / 4;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 20%);
+}
+
+body.weddings .section.weddings-culinary .split-copy h2 {
+  margin-bottom: 2.5rem;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--weddings-dark);
+}
+
+body.weddings .section.weddings-culinary .split-quote {
+  margin: 0 0 2rem;
+  padding: 0;
+  border: none;
+  font-family: var(--body-font-family);
+  font-size: 1.25rem;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--weddings-muted);
+}
+
+body.weddings .section.weddings-culinary .split-copy > p:not(:has(a)) {
+  max-width: 42rem;
+  margin-bottom: 3rem;
+  color: var(--weddings-muted);
+}
+
+body.weddings .section.weddings-culinary .culinary-features {
+  margin: 0 0 3.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+body.weddings .section.weddings-culinary .culinary-feature {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+}
+
+body.weddings .section.weddings-culinary .culinary-feature-icon {
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+  font-size: 1.75rem;
+  color: var(--weddings-primary);
+}
+
+body.weddings .section.weddings-culinary .culinary-feature strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: var(--body-font-family);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+body.weddings .section.weddings-culinary .culinary-feature p {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--weddings-muted);
+}
+
+body.weddings .section.weddings-culinary .button-container a.button:any-link {
+  padding: 0 0 0.5rem;
+  border: none;
+  border-bottom: 2px solid var(--weddings-primary);
+  border-radius: 0;
+  background: transparent;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--weddings-primary);
+  box-shadow: none;
+}
+
+body.weddings .section.weddings-culinary .button-container a.button:any-link:hover {
+  opacity: 0.6;
+  background: transparent;
+  border-color: var(--weddings-primary);
+  color: var(--weddings-primary);
+}
+
+/* —— Seating table —— */
+body.weddings main .section.weddings-planning {
+  padding: 8rem 0;
+  background-color: var(--weddings-surface);
+}
+
+body.weddings .section.weddings-planning > div {
+  max-width: 90rem;
+}
+
+body.weddings .section.weddings-planning h2 {
+  margin: 0 auto 1.5rem;
+  text-align: center;
+  font-family: var(--brand-font-family);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+body.weddings .section.weddings-planning > div > p:first-of-type {
+  max-width: 48rem;
+  margin: 0 auto 5rem;
+  text-align: center;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--weddings-muted);
+}
+
+body.weddings .section.weddings-planning .weddings-table-wrap {
+  overflow-x: auto;
+  border: 1px solid rgb(208 197 180 / 30%);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+}
+
+body.weddings .section.weddings-planning table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 1.125rem;
+}
+
+body.weddings .section.weddings-planning thead tr {
+  background-color: var(--weddings-surface-low);
+  text-align: left;
+}
+
+body.weddings .section.weddings-planning th {
+  padding: 2rem 2.5rem;
+  border-bottom: 1px solid rgb(208 197 180 / 30%);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--weddings-dark);
+}
+
+body.weddings .section.weddings-planning th:not(:first-child) {
+  text-align: center;
+}
+
+body.weddings .section.weddings-planning td {
+  padding: 2.5rem;
+  border-bottom: 1px solid rgb(208 197 180 / 20%);
+  color: var(--weddings-muted);
+  transition: background-color 0.2s ease;
+}
+
+body.weddings .section.weddings-planning tbody tr:hover td {
+  background-color: #fff;
+}
+
+body.weddings .section.weddings-planning td:first-child {
+  font-weight: 600;
+  color: var(--weddings-dark);
+}
+
+body.weddings .section.weddings-planning td:not(:first-child) {
+  text-align: center;
+}
+
+body.weddings .section.weddings-planning tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* —— Final CTA: gold band —— */
+body.weddings main .section.weddings-cta {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 10rem 0;
+  background-color: var(--weddings-primary-container);
+  color: var(--weddings-on-primary-container);
+}
+
+body.weddings .section.weddings-cta::before,
+body.weddings .section.weddings-cta::after {
+  content: '';
+  position: absolute;
+  border: 1px solid rgb(255 251 255 / 10%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+body.weddings .section.weddings-cta::before {
+  top: 0;
+  right: 0;
+  width: min(800px, 90vw);
+  height: min(800px, 90vw);
+  transform: translate(50%, -50%);
+}
+
+body.weddings .section.weddings-cta::after {
+  bottom: 0;
+  left: 0;
+  width: min(600px, 70vw);
+  height: min(600px, 70vw);
+  transform: translate(-50%, 50%);
+}
+
+body.weddings .section.weddings-cta > div {
+  position: relative;
+  z-index: 1;
+  max-width: 90rem;
+}
+
+body.weddings .section.weddings-cta h2 {
+  margin: 0 auto 2.5rem;
+  font-family: var(--brand-font-family);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--weddings-on-primary-container);
+}
+
+body.weddings .section.weddings-cta > div > p:first-of-type {
+  max-width: 48rem;
+  margin: 0 auto 4rem;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  opacity: 0.95;
+  color: var(--weddings-on-primary-container);
+}
+
+body.weddings .section.weddings-cta .weddings-cta-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (width >= 600px) {
+  body.weddings .section.weddings-cta .weddings-cta-actions {
+    flex-direction: row;
+    gap: 2.5rem;
+  }
+}
+
+body.weddings .section.weddings-cta a.button:any-link {
+  margin: 0;
+  padding: 1.5rem 3.5rem;
+  border: none;
+  background-color: var(--weddings-on-primary-container);
+  font-size: 1rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--weddings-primary-container);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.weddings .section.weddings-cta a.button:any-link:hover {
+  background-color: #fff;
+  color: var(--weddings-primary-container);
+}
+
+body.weddings .section.weddings-cta .weddings-gallery-link {
+  display: inline-flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0;
+  padding: 0 0 0.5rem;
+  border: none;
+  border-bottom: 1px solid rgb(255 251 255 / 30%);
+  background: none;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--weddings-on-primary-container);
+  transition: gap 0.3s ease;
+}
+
+body.weddings .section.weddings-cta .weddings-gallery-link:hover {
+  gap: 1rem;
+  color: var(--weddings-on-primary-container);
+}
+
+body.weddings .section.weddings-cta .weddings-gallery-link .fa-arrow-right {
+  font-size: 1.25rem;
+}

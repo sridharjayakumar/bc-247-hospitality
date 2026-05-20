@@ -1,20 +1,137 @@
+/* Albergo Pacifica footer — dark charcoal, gold headings, multi-column layout */
+
 footer {
-  background-color: var(--light-color);
+  background-color: var(--dark-color);
+  color: var(--footer-text-color);
   font-size: var(--body-font-size-xs);
+  margin-top: 0;
 }
 
-footer .footer > div {
+footer .footer-content,
+main:has(.footer-contact) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
   margin: auto;
-  max-width: 1200px;
-  padding: 40px 24px 24px;
+  max-width: 1280px;
+  padding: 56px 24px 32px;
 }
 
-footer .footer p {
+footer .footer-content p,
+main:has(.footer-contact) p {
+  margin: 0 0 0.75em;
+  line-height: 1.65;
+  color: var(--footer-text-color);
+}
+
+footer .footer-content p:last-child,
+main:has(.footer-contact) p:last-child {
+  margin-bottom: 0;
+}
+
+/* brand column */
+footer .footer-content .footer-contact strong,
+main:has(.footer-contact) .footer-contact strong {
+  display: block;
+  margin-bottom: 16px;
+  font-family: var(--brand-font-family);
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--accent-light);
+}
+
+footer .footer-content .footer-contact p,
+main:has(.footer-contact) .footer-contact p {
+  font-size: var(--body-font-size-xs);
+  color: var(--footer-muted-color);
+}
+
+/* link column headings */
+footer .footer-content h3,
+main:has(.footer-contact) h3 {
+  margin: 0 0 20px;
+  font-family: var(--body-font-family);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+}
+
+footer .footer-content ul,
+main:has(.footer-contact) ul {
   margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+footer .footer-content li,
+main:has(.footer-contact) li {
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+
+footer .footer-content li:last-child,
+main:has(.footer-contact) li:last-child {
+  margin-bottom: 0;
+}
+
+footer .footer-content a:any-link,
+main:has(.footer-contact) a:any-link {
+  color: var(--footer-text-color);
+  text-decoration: none;
+}
+
+footer .footer-content a:any-link:hover,
+main:has(.footer-contact) a:any-link:hover {
+  color: var(--accent-light);
+  text-decoration: none;
+}
+
+/* contact info band (address / phone in brand column) */
+footer .footer-content .footer-contact,
+main:has(.footer-contact) .footer-contact {
+  padding-bottom: 8px;
+}
+
+/* copyright bar */
+footer .footer-content .footer-copyright,
+main:has(.footer-contact) .footer-copyright {
+  padding-top: 28px;
+  border-top: 1px solid var(--footer-border-color);
+  text-align: center;
+}
+
+footer .footer-content .footer-copyright p,
+main:has(.footer-contact) .footer-copyright p {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--footer-muted-color);
 }
 
 @media (width >= 900px) {
-  footer .footer > div {
-    padding: 40px 32px 24px;
+  footer .footer-content,
+  main:has(.footer-contact) {
+    grid-template-columns: 1.35fr 1fr 1fr;
+    gap: 48px 40px;
+    padding: 64px 40px 28px;
+  }
+
+  footer .footer-content .footer-copyright,
+  main:has(.footer-contact) .footer-copyright {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    padding-top: 24px;
+  }
+
+  footer .footer-content .footer-copyright .default-content-wrapper,
+  main:has(.footer-contact) .footer-copyright .default-content-wrapper {
+    width: 100%;
+    text-align: center;
   }
 }

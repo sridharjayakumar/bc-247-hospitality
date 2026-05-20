@@ -3,25 +3,185 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 32px;
 }
 
 .cards > ul > li {
-  border: 1px solid #dadada;
   background-color: var(--background-color);
+  box-shadow: 0 2px 12px rgb(0 0 0 / 8%);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cards > ul > li:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
 }
 
 .cards .cards-card-body {
-  margin: 16px;
+  padding: 24px;
+}
+
+.cards .cards-card-body h3 {
+  font-size: var(--heading-font-size-s);
+  margin-top: 0;
+  color: var(--dark-color);
+}
+
+.cards .cards-card-body p {
+  font-size: var(--body-font-size-s);
+  color: var(--dark-color);
+  line-height: 1.7;
 }
 
 .cards .cards-card-image {
   line-height: 0;
+  overflow: hidden;
 }
 
 .cards > ul > li img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.cards > ul > li:hover img {
+  transform: scale(1.05);
+}
+
+/* Immersive bento gallery (Rooms page) */
+.cards.gallery > ul {
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.cards.gallery > ul > li {
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+  box-shadow: none;
+  transform: none;
+}
+
+.cards.gallery > ul > li:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.cards.gallery .cards-card-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.cards.gallery .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: unset;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.cards.gallery > ul > li:hover .cards-card-image img {
+  transform: scale(1.05);
+}
+
+.cards.gallery .cards-card-body {
+  position: absolute;
+  z-index: 1;
+  inset: auto 0 0;
+  padding: 32px 24px;
+  background: linear-gradient(to top, rgb(0 0 0 / 75%) 0%, rgb(0 0 0 / 35%) 55%, transparent 100%);
+  color: #fff;
+}
+
+.cards.gallery .cards-card-body p {
+  color: rgb(255 255 255 / 90%);
+  margin: 0 0 0.5em;
+}
+
+.cards.gallery .cards-card-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 85%);
+  margin-bottom: 0.75rem;
+}
+
+.cards.gallery .cards-card-title {
+  font-family: var(--brand-font-family);
+  font-size: var(--heading-font-size-l);
+  font-weight: 400;
+  line-height: 1.25;
+  margin: 0 0 0.5em;
+  color: #fff;
+}
+
+.cards.gallery .cards-card-title strong {
+  font-weight: inherit;
+}
+
+.cards.gallery .cards-card-body p:not(.cards-card-eyebrow, .cards-card-title) {
+  max-width: 28rem;
+  font-size: var(--body-font-size-s);
+  margin-bottom: 1rem;
+}
+
+.cards.gallery a.cards-card-cta:any-link {
+  display: inline-block;
+  margin: 0;
+  padding: 0 0 2px;
+  border: none;
+  border-bottom: 1px solid #fff;
+  border-radius: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.cards.gallery a.cards-card-cta:any-link:hover {
+  color: var(--accent-light);
+  border-color: var(--accent-light);
+  background: transparent;
+}
+
+@media (width >= 900px) {
+  .cards.gallery > ul {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  .cards.gallery > ul > li:nth-child(1) {
+    grid-column: span 8;
+    min-height: 600px;
+  }
+
+  .cards.gallery > ul > li:nth-child(2) {
+    grid-column: span 4;
+    min-height: 600px;
+  }
+
+  .cards.gallery > ul > li:nth-child(3) {
+    grid-column: span 5;
+    min-height: 500px;
+  }
+
+  .cards.gallery > ul > li:nth-child(4) {
+    grid-column: span 7;
+    min-height: 500px;
+  }
+
+  .cards.gallery .cards-card-body {
+    padding: 40px 48px;
+  }
+
+  .cards.gallery > ul > li:nth-child(2) .cards-card-body,
+  .cards.gallery > ul > li:nth-child(3) .cards-card-body {
+    padding: 32px;
+  }
 }

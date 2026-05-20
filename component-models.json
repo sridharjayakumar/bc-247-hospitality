@@ -132,10 +132,51 @@
         "component": "multiselect",
         "name": "style",
         "label": "Style",
+        "valueType": "string",
         "options": [
           {
             "name": "Highlight",
             "value": "highlight"
+          },
+          {
+            "name": "Dark",
+            "value": "dark"
+          },
+          {
+            "name": "Centered",
+            "value": "centered"
+          },
+          {
+            "name": "Hero",
+            "value": "hero"
+          },
+          {
+            "name": "Split",
+            "value": "split"
+          },
+          {
+            "name": "Split (image first)",
+            "value": "split-reverse"
+          },
+          {
+            "name": "Bento",
+            "value": "bento"
+          },
+          {
+            "name": "Bento mosaic",
+            "value": "bento-mosaic"
+          },
+          {
+            "name": "Wide",
+            "value": "wide"
+          },
+          {
+            "name": "Narrow",
+            "value": "narrow"
+          },
+          {
+            "name": "Feature grid",
+            "value": "feature-grid"
           }
         ]
       }
@@ -211,6 +252,25 @@
         "name": "text",
         "value": "",
         "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "testimonial",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "quote",
+        "value": "",
+        "label": "Quote",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "author",
+        "value": "",
+        "label": "Guest Name",
         "valueType": "string"
       }
     ]

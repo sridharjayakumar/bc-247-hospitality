@@ -12,16 +12,23 @@
 
 :root {
   /* colors */
-  --background-color: white;
-  --light-color: #f8f8f8;
-  --dark-color: #505050;
-  --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
+  --background-color: #fdfbf7;
+  --light-color: #f5f0e8;
+  --dark-color: #2c2c2c;
+  --text-color: #1a1a1a;
+  --link-color: #8b6914;
+  --link-hover-color: #6b4f0e;
+  --accent-color: #7a6f2a;
+  --accent-light: #c9a84c;
+  --footer-text-color: rgb(255 255 255 / 88%);
+  --footer-muted-color: rgb(255 255 255 / 55%);
+  --footer-border-color: rgb(255 255 255 / 15%);
+  --overlay-color: rgb(0 0 0 / 40%);
 
   /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
+  --body-font-family: "Work Sans", roboto, roboto-fallback, sans-serif;
   --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+  --brand-font-family: "Libre Baskerville", "Times New Roman", georgia, serif;
 
   /* body sizes */
   --body-font-size-m: 22px;
@@ -37,7 +44,7 @@
   --heading-font-size-xs: 22px;
 
   /* nav height */
-  --nav-height: 64px;
+  --nav-height: 80px;
 }
 
 /* fallback fonts */
@@ -84,17 +91,13 @@ body.appear {
   display: block;
 }
 
-header {
-  height: var(--nav-height);
-}
-
 header .header,
-footer .footer {
+footer .footer.block {
   visibility: hidden;
 }
 
 header .header[data-block-status="loaded"],
-footer .footer[data-block-status="loaded"] {
+footer .footer.block[data-block-status="loaded"] {
   visibility: visible;
 }
 
@@ -173,20 +176,24 @@ button {
   max-width: 100%;
   margin: 12px 0;
   border: 2px solid transparent;
-  border-radius: 2.4em;
-  padding: 0.5em 1.2em;
-  font-family: var(--body-font-family);
+  border-radius: 0;
+  padding: 0.75em 2em;
+  font-family: var(--heading-font-family);
   font-style: normal;
-  font-weight: 500;
+  font-weight: 700;
+  font-size: var(--body-font-size-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   line-height: 1.25;
   text-align: center;
   text-decoration: none;
-  background-color: var(--link-color);
-  color: var(--background-color);
+  background-color: var(--accent-color);
+  color: white;
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: background-color 0.3s ease;
 }
 
 a.button:hover,
@@ -206,8 +213,14 @@ button:disabled:hover {
 a.button.secondary,
 button.secondary {
   background-color: unset;
-  border: 2px solid currentcolor;
-  color: var(--text-color);
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+}
+
+a.button.secondary:hover,
+button.secondary:hover {
+  background-color: var(--accent-color);
+  color: white;
 }
 
 main img {
@@ -249,9 +262,776 @@ main > .section:first-of-type {
 }
 
 /* section metadata */
-main .section.light,
 main .section.highlight {
   background-color: var(--light-color);
   margin: 0;
   padding: 40px 0;
+}
+
+main .section.dark {
+  background-color: var(--dark-color);
+  color: white;
+  margin: 0;
+  padding: 60px 0;
+}
+
+main .section.dark h1,
+main .section.dark h2,
+main .section.dark h3 {
+  color: var(--accent-light);
+}
+
+main .section.dark a:any-link {
+  color: var(--accent-light);
+}
+
+main .section.centered {
+  text-align: center;
+}
+
+main .section.centered h1,
+main .section.centered h2,
+main .section.centered h3 {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+main .section.centered > div {
+  max-width: 900px;
+}
+
+main .section.centered p {
+  font-size: var(--body-font-size-m);
+  line-height: 1.7;
+  color: var(--text-color);
+}
+
+/* Rooms — immersive gallery section */
+main .section.wide {
+  margin: 0;
+  padding: 0 0 64px;
+  background-color: var(--background-color);
+}
+
+main .section.wide > div {
+  max-width: 1280px;
+  padding: 0 24px;
+}
+
+@media (width >= 900px) {
+  main .section.wide > div {
+    padding: 0 40px;
+  }
+}
+
+/* Rooms — amenities grid (Stitch: 4-col icons) */
+main .section.feature-grid {
+  margin: 0;
+  padding: 64px 0 80px;
+  background-color: var(--light-color);
+}
+
+main .section.feature-grid > div {
+  max-width: 1280px;
+  padding: 0 24px;
+}
+
+@media (width >= 900px) {
+  main .section.feature-grid > div {
+    padding: 0 40px;
+  }
+}
+
+main .section.feature-grid :is(h2, .feature-grid-heading) {
+  margin: 0 0 1rem;
+  text-align: center;
+  font-family: var(--brand-font-family);
+  font-size: var(--heading-font-size-l);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+main .section.feature-grid > div > :is(.feature-grid-lead, p:first-of-type) {
+  margin: 0 auto 4rem;
+  max-width: 42rem;
+  text-align: center;
+  font-size: var(--body-font-size-m);
+  line-height: 1.7;
+  color: var(--text-color);
+}
+
+main .section.feature-grid ul,
+main .section.feature-grid .feature-grid-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (width >= 900px) {
+  main .section.feature-grid ul,
+  main .section.feature-grid .feature-grid-list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem 2rem;
+  }
+}
+
+main .section.feature-grid ul > li,
+main .section.feature-grid .amenity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+main .section.feature-grid .amenity-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  margin: 0 0 1.5rem;
+  border: 1px solid rgb(0 0 0 / 8%);
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 6%);
+  color: var(--accent-color);
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+main .section.feature-grid .amenity:hover .amenity-icon {
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+main .section.feature-grid .amenity h4 {
+  margin: 0 0 0.5em;
+  font-family: var(--body-font-family);
+  font-size: var(--heading-font-size-xs);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-color);
+}
+
+main .section.feature-grid .amenity :is(p, .amenity-desc) {
+  margin: 0;
+  max-width: 14rem;
+  font-size: var(--body-font-size-xs);
+  line-height: 1.5;
+  color: var(--text-color);
+  opacity: 0.85;
+}
+
+/* Dining page — shared typography */
+main .section.split,
+main .section.bento,
+main .section.narrow,
+main .section.split-reverse {
+  font-family: var(--body-font-family);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--text-color);
+}
+
+main .section.split :is(h2, h3),
+main .section.bento :is(h2, h3),
+main .section.narrow h2,
+main .section.split-reverse h2 {
+  font-family: var(--brand-font-family);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+main .section.split p,
+main .section.bento p,
+main .section.split-reverse p {
+  font-family: var(--body-font-family);
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
+/* Solid CTAs (Reserve + Inquire) */
+main .section.narrow a.button:any-link,
+main .section.split a.button:any-link,
+main .section.split .button-container a:any-link,
+main .section.split-reverse a.button:any-link,
+main .section.split-reverse .button-container a:any-link {
+  display: inline-block;
+  box-sizing: border-box;
+  max-width: 100%;
+  margin: 1.5rem 0 0;
+  padding: 1rem 3rem;
+  border: 2px solid var(--dark-color);
+  border-radius: 0;
+  background-color: var(--dark-color);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: 0.12em;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: normal;
+  overflow: visible;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+main .section.narrow a.button:hover,
+main .section.split a.button:any-link:hover,
+main .section.split .button-container a:any-link:hover,
+main .section.split-reverse a.button:any-link:hover,
+main .section.split-reverse .button-container a:any-link:hover {
+  background-color: var(--link-hover-color);
+  border-color: var(--link-hover-color);
+  color: #fff;
+}
+
+/* Dining page — philosophy split */
+main .section.split {
+  margin: 0;
+  padding: 64px 0;
+  text-align: left;
+}
+
+main .section.split > div {
+  max-width: 1280px;
+  padding: 0 24px;
+}
+
+@media (width >= 900px) {
+  main .section.split > div {
+    padding: 0 40px;
+  }
+}
+
+main .section.split .split-grid {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (width >= 900px) {
+  main .section.split .split-grid {
+    grid-template-columns: 7fr 5fr;
+    gap: 2rem;
+  }
+}
+
+main .section.split .split-grid h2,
+main .section.split-reverse .split-grid h2 {
+  margin: 0 0 1.5rem;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--accent-color);
+}
+
+main .section.split .split-copy > p,
+main .section.split-reverse .split-copy > p {
+  margin: 0 0 2rem;
+  max-width: 36rem;
+  color: var(--text-color);
+}
+
+main .section.split .split-quote,
+main .section.split-reverse .split-quote {
+  margin: 0;
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--accent-color);
+  font-family: var(--brand-font-family);
+  font-size: var(--heading-font-size-xs);
+  font-style: italic;
+  line-height: 1.5;
+  color: #5d5c57;
+}
+
+main .section.split .split-media img,
+main .section.split-reverse .split-media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Dining page — bento (seasonal + lounge) */
+main .section.bento {
+  margin: 0;
+  padding: 64px 0;
+  background-color: var(--light-color);
+}
+
+main .section.bento > div {
+  max-width: 1280px;
+  padding: 0 24px;
+}
+
+@media (width >= 900px) {
+  main .section.bento > div {
+    padding: 0 40px;
+  }
+}
+
+main .section.bento .bento-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (width >= 900px) {
+  main .section.bento .bento-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+main .section.bento .bento-panel {
+  padding: 3rem;
+  background-color: #fff;
+  border: 1px solid rgb(0 0 0 / 8%);
+}
+
+main .section.bento .bento-panel .section-eyebrow {
+  display: block;
+  margin: 0 0 1rem;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-color);
+}
+
+main .section.bento .bento-panel h3 {
+  margin: 0 0 1.5rem;
+  font-size: clamp(1.75rem, 3vw, 2.125rem);
+  color: var(--text-color);
+}
+
+main .section.bento .bento-panel > p {
+  margin: 0 0 2rem;
+  max-width: 28rem;
+  color: var(--text-color);
+}
+
+main .section.bento .bento-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+main .section.bento .bento-images img {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+main .section.bento .bento-aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem;
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+main .section.bento .bento-aside h3 {
+  margin: 0 0 1.5rem;
+  font-size: clamp(1.75rem, 3vw, 2.125rem);
+  color: #fff;
+}
+
+main .section.bento .bento-aside p {
+  margin: 0 0 2rem;
+  color: rgb(255 255 255 / 90%);
+}
+
+main .section.bento .bento-aside a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 8px;
+}
+
+/* Dining page — hours */
+main .section.narrow {
+  margin: 0;
+  padding: 64px 0;
+  text-align: center;
+}
+
+main .section.narrow > div {
+  max-width: 42rem;
+}
+
+main .section.narrow h2 {
+  margin: 0 0 3rem;
+  font-size: clamp(1.75rem, 3vw, 2.125rem);
+  color: var(--text-color);
+}
+
+main .section.narrow .narrow-list {
+  margin: 0 0 3rem;
+  padding: 3rem 0;
+  border-block: 1px solid rgb(0 0 0 / 12%);
+  list-style: none;
+}
+
+main .section.narrow .narrow-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  font-size: 1.125rem;
+}
+
+main .section.narrow .narrow-list strong {
+  font-family: var(--body-font-family);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-color);
+}
+
+main .section.narrow .narrow-list span {
+  font-family: var(--body-font-family);
+  font-size: 1.125rem;
+  color: var(--text-color);
+}
+
+main .section.narrow .button-container {
+  margin-top: 0;
+}
+
+main .section.wide,
+main .section.bento-mosaic,
+main .section.split-reverse,
+main .section.narrow {
+  font-family: var(--body-font-family);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--text-color);
+}
+
+main .section.wide :is(h2, h3),
+main .section.bento-mosaic :is(h2, h3),
+main .section.split-reverse :is(h2, h3),
+main .section.narrow h2 {
+  font-family: var(--brand-font-family);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.section-eyebrow {
+  display: block;
+  margin: 0 0 1rem;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-color);
+}
+
+/* Wide sections with a Cards block (e.g. venues grid) */
+main .section.wide:has(.cards) {
+  padding: 96px 0;
+}
+
+main .section.wide:has(.cards) > div > :is(h2, .section-intro) {
+  max-width: 48rem;
+  margin: 0 auto 4rem;
+  text-align: center;
+  font-size: clamp(1.75rem, 3vw, 2.125rem);
+}
+
+main .section.wide .section-divider {
+  width: 4rem;
+  height: 1px;
+  margin: 0 auto 4rem;
+  border: 0;
+  background-color: var(--accent-color);
+}
+
+/* Services bento */
+main .section.bento-mosaic {
+  margin: 0;
+  padding: 96px 0;
+  background-color: var(--light-color);
+  border-block: 1px solid rgb(0 0 0 / 8%);
+}
+
+main .section.bento-mosaic > div {
+  max-width: 1280px;
+  padding: 0 24px;
+}
+
+@media (width >= 900px) {
+  main .section.bento-mosaic > div {
+    padding: 0 40px;
+  }
+}
+
+main .section.bento-mosaic .bento-mosaic-header {
+  margin-bottom: 4rem;
+}
+
+main .section.bento-mosaic .bento-mosaic-header h2 {
+  margin: 0;
+  font-size: clamp(1.75rem, 3vw, 2.125rem);
+}
+
+main .section.bento-mosaic .bento-mosaic-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (width >= 900px) {
+  main .section.bento-mosaic .bento-mosaic-grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  main .section.bento-mosaic .bento-mosaic-tile {
+    grid-column: span 8;
+  }
+
+  main .section.bento-mosaic .bento-mosaic-accent {
+    grid-column: span 4;
+  }
+
+  main .section.bento-mosaic .bento-mosaic-bar {
+    grid-column: span 12;
+  }
+}
+
+main .section.bento-mosaic .bento-mosaic-tile {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+  padding: 3rem;
+  background-color: #fff;
+  border: 1px solid rgb(0 0 0 / 6%);
+}
+
+@media (width >= 900px) {
+  main .section.bento-mosaic .bento-mosaic-tile {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+main .section.bento-mosaic .bento-mosaic-tile-media img {
+  display: block;
+  width: 100%;
+  min-height: 200px;
+  object-fit: cover;
+  filter: grayscale(20%);
+  transition: filter 0.5s ease;
+}
+
+main .section.bento-mosaic .bento-mosaic-tile:hover img {
+  filter: grayscale(0);
+}
+
+main .section.bento-mosaic .bento-mosaic-tile-copy h3 {
+  margin: 0 0 1rem;
+}
+
+main .section.bento-mosaic .bento-mosaic-tile-copy ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+main .section.bento-mosaic .bento-mosaic-tile-copy li {
+  margin: 0.75rem 0 0;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #5d5c57;
+}
+
+main .section.bento-mosaic .bento-mosaic-accent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem;
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+main .section.bento-mosaic .bento-mosaic-accent h3,
+main .section.bento-mosaic .bento-mosaic-accent p {
+  color: #fff;
+}
+
+main .section.bento-mosaic .bento-mosaic-accent a {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 1rem 0;
+  border: 1px solid rgb(255 255 255 / 30%);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+main .section.bento-mosaic .bento-mosaic-accent a:hover {
+  background-color: #fff;
+  color: var(--accent-color);
+}
+
+main .section.bento-mosaic .bento-mosaic-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-start;
+  padding: 3rem;
+  background-color: #e8e4dc;
+  border: 1px solid rgb(0 0 0 / 6%);
+}
+
+@media (width >= 900px) {
+  main .section.bento-mosaic .bento-mosaic-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+main .section.bento-mosaic .bento-mosaic-avatars {
+  display: flex;
+}
+
+main .section.bento-mosaic .bento-mosaic-avatars img {
+  width: 4rem;
+  height: 4rem;
+  margin-left: -1rem;
+  border: 4px solid #fff;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+main .section.bento-mosaic .bento-mosaic-avatars img:first-child {
+  margin-left: 0;
+}
+
+/* Weddings feature */
+main .section.split-reverse {
+  margin: 0;
+  padding: 128px 0;
+}
+
+main .section.split-reverse > div {
+  max-width: 1280px;
+  padding: 0 24px;
+}
+
+@media (width >= 900px) {
+  main .section.split-reverse > div {
+    padding: 0 40px;
+  }
+}
+
+main .section.split-reverse .split-grid {
+  display: grid;
+  gap: 5rem;
+  align-items: center;
+}
+
+@media (width >= 900px) {
+  main .section.split-reverse .split-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+  }
+}
+
+main .section.split-reverse .split-features {
+  margin: 2rem 0;
+}
+
+main .section.split-reverse .split-features section {
+  margin-bottom: 1.5rem;
+}
+
+/* Flat AEM delivery (before section layout decoration runs) */
+main .section.split > div > h4,
+main .section.split-reverse > div > h4 {
+  display: block;
+  margin: 1.5rem 0 0.35rem;
+}
+
+/* Narrow band CTA (no hours list) */
+main .section.narrow:not(:has(.narrow-list)) {
+  margin: 0;
+  padding: 96px 0;
+  background-color: #e5e3de;
+}
+
+main .section.narrow:not(:has(.narrow-list)) > div {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background-color: #fff;
+  border: 1px solid rgb(0 0 0 / 8%);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 8%);
+  text-align: center;
+}
+
+@media (width >= 900px) {
+  main .section.narrow:not(:has(.narrow-list)) > div {
+    padding: 5rem;
+  }
+}
+
+main .section.narrow:not(:has(.narrow-list)) h2 {
+  margin: 0 0 1rem;
+  font-size: clamp(1.75rem, 3vw, 2.125rem);
+}
+
+main .section.narrow:not(:has(.narrow-list)) > div > p {
+  margin: 0 0 2rem;
+  color: #5d5c57;
+}
+
+main .section.narrow:not(:has(.narrow-list)) a.button:any-link {
+  display: inline-block;
+  padding: 1rem 3rem;
+  border: 2px solid var(--dark-color);
+  background-color: var(--dark-color);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+main .section.narrow:not(:has(.narrow-list)) a.button:hover {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
 }

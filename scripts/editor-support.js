@@ -6,10 +6,16 @@ import {
   decorateSections,
   loadBlock,
   loadScript,
+  loadCSS,
   loadSections,
 } from './aem.js';
 import { decorateRichtext } from './editor-support-rte.js';
-import { decorateMain } from './scripts.js';
+import {
+  decorateFeatureGrid,
+  decorateMain,
+  decorateSectionLayouts,
+  decorateWeddings,
+} from './scripts.js';
 
 let promiseChanges$ = Promise.resolve();
 
@@ -44,6 +50,8 @@ async function applyChanges(event) {
       decorateMain(newMain);
       decorateRichtext(newMain);
       await loadSections(newMain);
+      decorateFeatureGrid(newMain);
+      decorateSectionLayouts(newMain);
       element.remove();
       newMain.style.display = null;
       // eslint-disable-next-line no-use-before-define
@@ -82,6 +90,8 @@ async function applyChanges(event) {
           decorateSections(parentElement);
           decorateBlocks(parentElement);
           await loadSections(parentElement);
+          decorateFeatureGrid(parentElement);
+          decorateSectionLayouts(parentElement);
           element.remove();
           newSection.style.display = null;
         } else {
@@ -119,6 +129,22 @@ attachEventListeners(document.querySelector('main'));
 // decorate rich text
 // this has to happen after decorateMain(), and everythime decorateBlocks() is called
 decorateRichtext();
+
+// Run layout decoration after UE preview DOM is ready (instrumented component wrappers)
+const main = document.querySelector('main');
+if (main) {
+  const runLayoutDecoration = () => {
+    decorateFeatureGrid(main);
+    decorateSectionLayouts(main);
+    if (/\/weddings\/?$/.test(window.location.pathname)) {
+      document.body.classList.add('weddings');
+      loadCSS(`${window.hlx.codeBasePath}/styles/weddings.css`);
+      decorateWeddings(main);
+    }
+  };
+  if (document.readyState === 'complete') runLayoutDecoration();
+  else window.addEventListener('load', runLayoutDecoration);
+}
 // in cases where the block decoration is not done in one synchronous iteration we need to listen
 // for new richtext-instrumented elements. this happens for example when using experimentation.
 const observer = new MutationObserver(() => decorateRichtext());
