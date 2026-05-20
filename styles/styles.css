@@ -626,6 +626,30 @@ main .section.split-reverse .split-copy a.button.secondary:any-link {
   color: var(--text-color);
 }
 
+/* Private dining / split text CTA (underlined, not solid button) */
+main .section.split-reverse .split-copy a.button.link-underline:any-link {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-color);
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  white-space: normal;
+}
+
+main .section.split-reverse .split-copy a.button.link-underline:any-link:hover {
+  background-color: transparent;
+  border: none;
+  color: var(--link-hover-color);
+}
+
 /* Dining page — bento (seasonal + lounge) */
 main .section.bento {
   margin: 0;
@@ -1031,7 +1055,27 @@ main .section.split-reverse .split-grid {
 }
 
 main .section.split-reverse .split-features {
+  display: grid;
+  gap: 1.5rem 2rem;
   margin: 2rem 0;
+}
+
+@media (width >= 900px) {
+  main .section.split-reverse .split-features {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+main .section.split-reverse .split-features > div {
+  margin: 0;
+}
+
+main .section.split-reverse .split-features h4 {
+  margin: 0 0 0.5rem;
+  font-size: var(--body-font-size-m);
+  font-weight: 600;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 main .section.split-reverse .split-features section {
