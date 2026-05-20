@@ -687,25 +687,6 @@ const EVENTS_FEATURE_ICONS = ['fa-heart', 'fa-camera'];
  * @param {Element} main
  */
 export function decorateEvents(main) {
-  const hero = main.querySelector('.section.hero .hero');
-  if (hero && !hero.querySelector('.events-hero-scroll')) {
-    const copy = hero.querySelector(':scope > div:last-child > div');
-    if (copy) {
-      const scroll = document.createElement('button');
-      scroll.type = 'button';
-      scroll.className = 'events-hero-scroll';
-      scroll.setAttribute('aria-label', 'Scroll to venues');
-      const icon = document.createElement('i');
-      icon.className = 'fa-solid fa-angles-down';
-      icon.setAttribute('aria-hidden', 'true');
-      scroll.append(icon);
-      scroll.addEventListener('click', () => {
-        document.getElementById('venues')?.scrollIntoView({ behavior: 'smooth' });
-      });
-      copy.append(scroll);
-    }
-  }
-
   const venuesSection = main.querySelector('.section.wide:has(.cards)');
   if (venuesSection) {
     venuesSection.classList.add('events-venues');
@@ -872,10 +853,6 @@ const isEventsPage = () => /\/events\/?$/.test(window.location.pathname);
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
-  if (isEventsPage()) {
-    document.body.classList.add('events');
-    loadCSS(`${window.hlx.codeBasePath}/styles/events.css`);
-  }
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
