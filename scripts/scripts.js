@@ -537,7 +537,7 @@ function wrapBento(section) {
   if (images.childElementCount) {
     const eyebrow = document.createElement('span');
     eyebrow.className = 'section-eyebrow';
-    eyebrow.textContent = 'Spring Selection';
+    eyebrow.textContent = 'SPRING SELECTION';
     panel.insertBefore(eyebrow, panel.firstChild);
     panel.append(images);
   }
