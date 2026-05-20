@@ -421,13 +421,18 @@ function sanitizeSectionHtml(html) {
     .replace(/<\/[^>]*motion[^>]*>/gi, '</div>');
 }
 
-function ensureSectionCtaButton(container) {
-  container?.querySelectorAll('a[href^="mailto:"]').forEach((a) => {
-    a.classList.add('button');
-    const parent = a.parentElement;
-    if (parent?.tagName === 'P' || parent?.tagName === 'DIV') {
-      parent.classList.add('button-container');
-    }
+/** Style Text links and Button components in split columns. */
+function styleSplitCtas(container) {
+  if (!container) return;
+  container.querySelectorAll('p, .button-container').forEach((host) => {
+    const links = [...host.querySelectorAll(':scope > a')];
+    if (!links.length) return;
+    host.classList.add('button-container');
+    links.forEach((a, index) => {
+      a.classList.add('button');
+      if (a.classList.contains('secondary')) return;
+      if (links.length === 1 || index === 0) a.classList.add('primary');
+    });
   });
 }
 
@@ -493,6 +498,7 @@ function wrapSplit(section) {
   });
   grid.append(copy, media);
   wrapper.replaceChildren(grid);
+  styleSplitCtas(copy);
 }
 
 function wrapBento(section) {
@@ -589,7 +595,7 @@ function wrapSplitReverse(section) {
 
   grid.append(media, copy);
   wrapper.replaceChildren(grid);
-  ensureSectionCtaButton(copy);
+  styleSplitCtas(copy);
 }
 
 function wrapBentoMosaic(section) {
@@ -658,9 +664,10 @@ export function decorateSectionLayouts(main) {
   wrapBento(main.querySelector('.section.bento'));
   main.querySelectorAll('.section.bento-mosaic').forEach(wrapBentoMosaic);
   main.querySelectorAll('.section.split-reverse').forEach(wrapSplitReverse);
-  main.querySelectorAll(
-    '.section.split-reverse, .section.split, .section.narrow',
-  ).forEach((section) => ensureSectionCtaButton(getSectionWrapper(section) || section));
+  main.querySelectorAll('.section.split-reverse, .section.split').forEach((section) => {
+    const root = section.querySelector('.split-copy') || getSectionWrapper(section);
+    styleSplitCtas(root);
+  });
   main.querySelectorAll('.section.narrow').forEach(decorateNarrowList);
 }
 
