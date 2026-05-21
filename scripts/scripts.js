@@ -687,7 +687,7 @@ const EVENTS_FEATURE_ICONS = ['fa-heart', 'fa-camera'];
  * @param {Element} main
  */
 export function decorateEvents(main) {
-  const venuesSection = main.querySelector('.section.wide:has(.cards)');
+  const venuesSection = main.querySelector('.section.centered:has(.cards), .section.wide:has(.cards)');
   if (venuesSection) {
     venuesSection.classList.add('events-venues');
     venuesSection.id = 'venues';
@@ -765,11 +765,29 @@ export function decorateEvents(main) {
     });
 
     const accent = bentoSection.querySelector('.bento-mosaic-accent');
-    if (accent && !accent.querySelector('.bento-accent-icon')) {
-      const icon = document.createElement('i');
-      icon.className = 'bento-accent-icon fa-solid fa-sliders';
-      icon.setAttribute('aria-hidden', 'true');
-      accent.prepend(icon);
+    if (accent && !accent.querySelector('.bento-mosaic-accent-body')) {
+      const cta = accent.querySelector('a');
+      const body = document.createElement('div');
+      body.className = 'bento-mosaic-accent-body';
+      if (!accent.querySelector('.bento-accent-icon')) {
+        const icon = document.createElement('i');
+        icon.className = 'bento-accent-icon fa-solid fa-sliders';
+        icon.setAttribute('aria-hidden', 'true');
+        body.append(icon);
+      }
+      [...accent.childNodes].forEach((node) => {
+        if (node === cta) return;
+        if (node.nodeType === Node.ELEMENT_NODE && node.classList?.contains('bento-accent-icon')) {
+          body.append(node);
+          return;
+        }
+        if (node.nodeType === Node.ELEMENT_NODE) body.append(node);
+      });
+      accent.replaceChildren(body);
+      if (cta) {
+        cta.classList.add('bento-mosaic-accent-cta');
+        accent.append(cta);
+      }
     }
 
     const bar = bentoSection.querySelector('.bento-mosaic-bar');
@@ -777,11 +795,16 @@ export function decorateEvents(main) {
       const avatars = document.createElement('div');
       avatars.className = 'events-concierge-avatars';
       avatars.setAttribute('aria-hidden', 'true');
-      for (let i = 0; i < 3; i += 1) {
-        const circle = document.createElement('span');
-        circle.className = 'events-concierge-avatar';
-        avatars.append(circle);
-      }
+      ['/content/dam/albergo-pacifica/events-planner-1.jpg',
+        '/content/dam/albergo-pacifica/events-planner-2.jpg',
+        '/content/dam/albergo-pacifica/events-planner-3.jpg'].forEach((src, i) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `Event concierge ${i + 1}`;
+        img.loading = 'lazy';
+        img.className = 'events-concierge-avatar';
+        avatars.append(img);
+      });
       bar.append(avatars);
     }
   }
@@ -808,7 +831,7 @@ export function decorateEvents(main) {
     });
   }
 
-  const inquirySection = main.querySelector('.section.narrow:has(.events-inquiry-form)');
+  const inquirySection = main.querySelector('.section.narrow');
   if (inquirySection) {
     inquirySection.classList.add('events-inquiry');
     inquirySection.id = 'inquire';
@@ -819,12 +842,19 @@ export function decorateEvents(main) {
       const header = document.createElement('div');
       header.className = 'events-inquiry-header';
       const h2 = wrapper.querySelector('h2');
-      const lead = wrapper.querySelector('.events-inquiry-lead');
-      const form = wrapper.querySelector('.events-inquiry-form');
+      const paragraphs = [...wrapper.querySelectorAll(':scope > p')];
       if (h2) header.append(h2);
-      if (lead) header.append(lead);
+      paragraphs.forEach((p) => {
+        if (!p.querySelector('a.button')) header.append(p);
+      });
       card.append(header);
-      if (form) card.append(form);
+      const cta = wrapper.querySelector('a.button');
+      if (cta) {
+        const submit = document.createElement('div');
+        submit.className = 'events-inquiry-submit';
+        submit.append(cta);
+        card.append(submit);
+      }
       wrapper.replaceChildren(card);
     }
   }
@@ -891,6 +921,8 @@ async function loadLazy(doc) {
       decorateWeddings(main);
     }
     if (isEventsPage()) {
+      document.body.classList.add('events');
+      loadCSS(`${window.hlx.codeBasePath}/styles/events.css`);
       decorateEvents(main);
     }
   }

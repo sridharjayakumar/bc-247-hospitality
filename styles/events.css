@@ -302,8 +302,9 @@ body.events .section.bento-mosaic.events-services .bento-mosaic-accent p {
   opacity: 0.9;
 }
 
-body.events .section.bento-mosaic.events-services .bento-mosaic-accent a {
+body.events .section.bento-mosaic.events-services a.bento-mosaic-accent-cta {
   display: block;
+  width: 100%;
   margin-top: 3rem;
   padding: 1rem 0;
   border: 1px solid rgb(255 255 255 / 30%);
@@ -318,7 +319,7 @@ body.events .section.bento-mosaic.events-services .bento-mosaic-accent a {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-body.events .section.bento-mosaic.events-services .bento-mosaic-accent a:hover {
+body.events .section.bento-mosaic.events-services a.bento-mosaic-accent-cta:hover {
   background-color: #fff;
   color: var(--events-primary);
 }
@@ -371,7 +372,7 @@ body.events .section.bento-mosaic.events-services .events-concierge-avatar {
   border: 4px solid var(--events-surface);
   border-radius: 50%;
   margin-left: -1rem;
-  background: linear-gradient(135deg, #8b9cb3 0%, #5d6d82 100%);
+  object-fit: cover;
 }
 
 body.events .section.bento-mosaic.events-services .events-concierge-avatar:first-child {
@@ -656,4 +657,31 @@ body.events .events-inquiry-submit button {
 
 body.events .events-inquiry-submit button:hover {
   background-color: var(--events-primary-hover);
+}
+
+body.events .events-inquiry-submit a.button {
+  display: inline-block;
+  width: 100%;
+  padding: 1rem 4rem;
+  border: none;
+  background-color: var(--events-primary);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+@media (width >= 900px) {
+  body.events .events-inquiry-submit a.button {
+    width: auto;
+  }
+}
+
+body.events .events-inquiry-submit a.button:hover {
+  background-color: var(--events-primary-hover);
+  color: #fff;
 }

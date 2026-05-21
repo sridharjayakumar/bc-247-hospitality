@@ -11,8 +11,11 @@ function decorateGalleryCard(body) {
 }
 
 export default function decorate(block) {
-  const isWide = block.closest('.section')?.classList.contains('wide');
-  if (isWide) block.classList.add('gallery');
+  const section = block.closest('.section');
+  const isWide = section?.classList.contains('wide');
+  const isEventsVenues = /\/events\/?$/.test(window.location.pathname)
+    && section?.classList.contains('centered');
+  if (isWide || isEventsVenues) block.classList.add('gallery');
 
   /* change to ul, li */
   const ul = document.createElement('ul');
