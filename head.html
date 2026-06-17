@@ -11,3 +11,78 @@
 <link rel="stylesheet" href="/styles/styles.css"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;500;600&display=swap"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+<script nonce="aem" src="/scripts/styleconfigurations.js"></script>
+<script nonce="aem">
+    !function (n, o) {
+      o.forEach(function (o) {
+        n[o] || ((n.__alloyNS = n.__alloyNS ||
+          []).push(o), n[o] = function () {
+            var u = arguments; return new Promise(
+              function (i, l) { n[o].q.push([i, l, u]) })
+          }, n[o].q = [])
+      })
+    }
+      (window, ["alloy"]);
+    </script>
+
+<script nonce="aem" src="/scripts/alloy.js"></script>
+
+<script nonce="aem">
+    alloy("configure", {
+        defaultConsent: "in",
+        edgeDomain: "edge.adobedc.net",
+        edgeBasePath: "ee",
+        datastreamId: "a54c39f2-7dbd-4839-bdb8-69a0cd95e68c", // replace datastreamId
+        orgId: "2C3F0973613ECFF40A495E04@AdobeOrg", // replace ims org Id
+        debugEnabled: true,
+        idMigrationEnabled: false,
+        thirdPartyCookiesEnabled: false,
+        prehidingStyle: ".personalization-container { opacity: 0 !important }",
+    });
+
+// The concierge mount (#brand-concierge-mount) is injected by the footer block,
+// which loads asynchronously. Wait for it before bootstrapping so the experience
+// mounts reliably regardless of whether the footer or the fetch resolves first.
+function waitForElement(selector, timeout = 15000) {
+    return new Promise((resolve) => {
+        const existing = document.querySelector(selector);
+        if (existing) {
+            resolve(existing);
+            return;
+        }
+        const observer = new MutationObserver(() => {
+            const el = document.querySelector(selector);
+            if (el) {
+                observer.disconnect();
+                resolve(el);
+            }
+        });
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+        setTimeout(() => {
+            observer.disconnect();
+            resolve(document.querySelector(selector));
+        }, timeout);
+    });
+}
+
+Promise.all([
+    window["alloy"]("sendEvent", {
+        conversation: {
+            fetchConversationalExperience: true
+        }
+    }),
+    waitForElement("#brand-concierge-mount")
+]).then(([result, mount]) => {
+    console.log("Conversation experience fetched", result);
+    if (!mount) {
+        console.warn("Brand Concierge mount (#brand-concierge-mount) not found; skipping bootstrap.");
+        return;
+    }
+    window["alloy"]("bootstrapConversationalExperience", {
+        selector: "#brand-concierge-mount",
+        src: "/scripts/brandconciergemain.js",
+        stylingConfigurations: window.styleConfiguration,
+        stickySession: true // create a sticky session cookie with expiration
+    })
+});
+</script>

@@ -9,3 +9,6 @@ helix-importer-ui
 .idea
 
 CLAUDE.md
+
+content/
+scripts/*.mjs
