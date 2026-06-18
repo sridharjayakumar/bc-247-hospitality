@@ -9,16 +9,78 @@ const FOOTER_SECTION_CLASSES = [
   'footer-bar',
 ];
 
+const FOOTER_COLUMN_CLASSES = FOOTER_SECTION_CLASSES.slice(0, 4);
+
+/**
+ * True when a section is the Brand Concierge bc-section band.
+ * @param {Element} section section element
+ * @returns {boolean}
+ */
+function isBcSection(section) {
+  return section.classList.contains('bc-section')
+    || section.querySelector(':scope > .brandconcierge, :scope > .brandconcierge-wrapper');
+}
+
+/**
+ * Moves the bc-section band above .footer-content (full footer width).
+ * @param {Element} block footer block element
+ * @param {Element} container .footer-content element
+ */
+function hoistBcSection(block, container) {
+  if (block.querySelector(':scope > .bc-section')) return;
+
+  const styledSection = container.querySelector(':scope > .section.bc-section, :scope > .bc-section');
+  if (styledSection) {
+    block.insertBefore(styledSection, container);
+    return;
+  }
+
+  const bcBlock = container.querySelector(':scope > .section .brandconcierge');
+  if (!bcBlock) return;
+
+  const bcSection = document.createElement('div');
+  bcSection.className = 'section bc-section';
+  const blockRoot = bcBlock.closest('.brandconcierge-wrapper')
+    || bcBlock.parentElement
+    || bcBlock;
+  bcSection.append(blockRoot);
+  block.insertBefore(bcSection, container);
+
+  const hostSection = bcBlock.closest('.section');
+  if (hostSection?.parentElement === container && !hostSection.textContent.trim()) {
+    hostSection.remove();
+  }
+}
+
+/**
+ * Groups the four link columns into a single grid row below bc-section.
+ * @param {Element} container .footer-content element
+ */
+function wrapFooterColumns(container) {
+  if (container.querySelector('.footer-columns')) return;
+
+  const columns = FOOTER_COLUMN_CLASSES
+    .map((cls) => container.querySelector(`:scope > .section.${cls}`))
+    .filter(Boolean);
+  if (!columns.length) return;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'footer-columns';
+  columns[0].before(wrapper);
+  columns.forEach((column) => wrapper.append(column));
+}
+
 /**
  * Applies layout classes to footer sections (fragment page or embedded footer).
  * @param {Element} container Element containing .section children
  */
 export function applyFooterSectionClasses(container) {
-  const sections = [...container.querySelectorAll(':scope > .section')];
+  const sections = [...container.querySelectorAll(':scope > .section:not(.bc-section)')];
   sections.slice(0, FOOTER_SECTION_CLASSES.length).forEach((section, i) => {
     section.classList.add(FOOTER_SECTION_CLASSES[i]);
     section.classList.remove('centered', 'wide', 'highlight', 'dark');
   });
+  wrapFooterColumns(container);
 }
 
 /**
@@ -144,23 +206,26 @@ export function isFooterPage() {
 export function initFooterPreviewPage(main) {
   if (!main || !isFooterPage()) return;
 
+  main.classList.add('footer-page');
+  document.body.classList.add('footer-page');
+
   let container = main.querySelector(':scope > .footer-content');
   if (!container) {
     container = document.createElement('div');
     container.className = 'footer-content';
-    while (main.firstElementChild) {
-      container.append(main.firstElementChild);
-    }
+    const children = [...main.children];
+    children.forEach((child) => {
+      if (isBcSection(child)) main.append(child);
+      else container.append(child);
+    });
     main.append(container);
   }
-
-  main.classList.add('footer-page');
-  document.body.classList.add('footer-page');
 
   container.querySelectorAll('.section').forEach((section) => {
     section.style.removeProperty('display');
   });
 
+  hoistBcSection(main, container);
   applyFooterSectionClasses(container);
   decorateFooterContent(container);
 }
@@ -177,12 +242,20 @@ export default async function decorate(block) {
   block.textContent = '';
   const footerContent = document.createElement('div');
   footerContent.className = 'footer-content';
-  while (fragment.firstElementChild) footerContent.append(fragment.firstElementChild);
+  while (fragment.firstElementChild) {
+    const child = fragment.firstElementChild;
+    if (isBcSection(child)) {
+      block.append(child);
+      continue;
+    }
+    footerContent.append(child);
+  }
 
   footerContent.querySelectorAll('.section').forEach((section) => {
     section.style.removeProperty('display');
   });
 
+  hoistBcSection(block, footerContent);
   applyFooterSectionClasses(footerContent);
   decorateFooterContent(footerContent);
 

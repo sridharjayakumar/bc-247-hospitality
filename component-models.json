@@ -177,6 +177,10 @@
           {
             "name": "Feature grid",
             "value": "feature-grid"
+          },
+          {
+            "name": "Brand Concierge",
+            "value": "bc-section"
           }
         ]
       }

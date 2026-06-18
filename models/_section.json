@@ -41,7 +41,8 @@
             { "name": "Bento mosaic", "value": "bento-mosaic" },
             { "name": "Wide", "value": "wide" },
             { "name": "Narrow", "value": "narrow" },
-            { "name": "Feature grid", "value": "feature-grid" }
+            { "name": "Feature grid", "value": "feature-grid" },
+            { "name": "Brand Concierge", "value": "bc-section" }
           ]
         }
       ]
