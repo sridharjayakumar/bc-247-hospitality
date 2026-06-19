@@ -27,7 +27,7 @@ export default function decorate(block) {
       if (motion.children.length === 1 && motion.querySelector('picture')) motion.className = 'cards-card-image';
       else {
         motion.className = 'cards-card-body';
-        if (isWide) decorateGalleryCard(motion);
+        if (isWide || isEventsVenues) decorateGalleryCard(motion);
       }
     });
     ul.append(li);

@@ -693,17 +693,32 @@ export function decorateEvents(main) {
     venuesSection.id = 'venues';
     const wrapper = getSectionWrapper(venuesSection);
     if (wrapper && !wrapper.querySelector('.venues-header')) {
-      const eyebrowEl = wrapper.querySelector('.section-eyebrow');
       const h2 = wrapper.querySelector('h2');
-      const divider = wrapper.querySelector('.section-divider');
-      if (eyebrowEl && h2) {
+      let eyebrowEl = wrapper.querySelector('.section-eyebrow');
+      if (!eyebrowEl && h2) {
+        const pBefore = h2.previousElementSibling;
+        const pAfter = h2.nextElementSibling;
+        const candidateP = pAfter?.tagName === 'P' && !pAfter.querySelector('a, picture')
+          ? pAfter
+          : pBefore?.tagName === 'P' && !pBefore.querySelector('a, picture')
+            ? pBefore : null;
+        if (candidateP) {
+          candidateP.classList.add('section-eyebrow');
+          eyebrowEl = candidateP;
+        }
+      }
+      if (h2) {
         const header = document.createElement('div');
         header.className = 'venues-header';
-        const eyebrowP = eyebrowEl.closest('p');
-        if (eyebrowP) header.append(eyebrowP);
-        else header.append(eyebrowEl);
+        if (eyebrowEl) {
+          const eyebrowP = eyebrowEl.closest('p') === eyebrowEl ? eyebrowEl : eyebrowEl.closest('p');
+          if (eyebrowP) header.append(eyebrowP);
+          else header.append(eyebrowEl);
+        }
         header.append(h2);
-        if (divider) header.append(divider.closest('hr') || divider);
+        const divider = document.createElement('hr');
+        divider.className = 'section-divider';
+        header.append(divider);
         wrapper.insertBefore(header, wrapper.firstChild);
       }
     }
@@ -913,6 +928,13 @@ async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await loadSections(main);
   if (main) {
+    if (isEventsPage()) {
+      const bentoSection = main.querySelector('.section.bento:not(.bento-mosaic)');
+      if (bentoSection) {
+        bentoSection.classList.remove('bento');
+        bentoSection.classList.add('bento-mosaic');
+      }
+    }
     decorateFeatureGrid(main);
     decorateSectionLayouts(main);
     if (/\/weddings\/?$/.test(window.location.pathname)) {
