@@ -501,8 +501,51 @@ function wrapSplit(section) {
   styleSplitCtas(copy);
 }
 
+function hoistBentoImages(panel) {
+  const images = document.createElement('div');
+  images.className = 'bento-images';
+  [...panel.children].forEach((el) => {
+    if (el.classList?.contains('bento-images')) return;
+    if (el.querySelector('picture, img') && !el.querySelector('h3')) {
+      images.append(el);
+    }
+  });
+  if (images.childElementCount) panel.append(images);
+}
+
+function wrapBentoFromComponents(section, contentChildren) {
+  let secondH3Index = -1;
+  let h3Count = 0;
+  contentChildren.forEach((child, i) => {
+    if (child.querySelector('h3')) {
+      h3Count += 1;
+      if (h3Count === 2) secondH3Index = i;
+    }
+  });
+  if (secondH3Index < 0) return false;
+
+  const grid = document.createElement('div');
+  grid.className = 'bento-grid';
+  const panel = document.createElement('div');
+  panel.className = 'bento-panel';
+  const aside = document.createElement('aside');
+  aside.className = 'bento-aside';
+
+  contentChildren.slice(0, secondH3Index).forEach((el) => panel.append(el));
+  contentChildren.slice(secondH3Index).forEach((el) => aside.append(el));
+  hoistBentoImages(panel);
+
+  grid.append(panel, aside);
+  contentChildren[0].before(grid);
+  return true;
+}
+
 function wrapBento(section) {
   if (!section || section.querySelector('.bento-grid')) return;
+
+  const contentChildren = getSectionContentChildren(section);
+  if (contentChildren.length >= 3 && wrapBentoFromComponents(section, contentChildren)) return;
+
   const wrapper = getSectionWrapper(section);
   if (!wrapper) return;
   const headings = [...wrapper.querySelectorAll('h3')];
@@ -529,19 +572,7 @@ function wrapBento(section) {
     node = next;
   }
 
-  const images = document.createElement('div');
-  images.className = 'bento-images';
-  [...panel.querySelectorAll('p')].forEach((p) => {
-    if (p.querySelector('picture, img')) images.append(p);
-  });
-  if (images.childElementCount) {
-    const eyebrow = document.createElement('span');
-    eyebrow.className = 'section-eyebrow';
-    eyebrow.textContent = 'SPRING SELECTION';
-    panel.insertBefore(eyebrow, panel.firstChild);
-    panel.append(images);
-  }
-
+  hoistBentoImages(panel);
   grid.append(panel, aside);
   wrapper.replaceChildren(grid);
 }
@@ -741,7 +772,7 @@ function decorateNarrowList(section) {
   });
 }
 
-const LAYOUT_SECTIONS = '.section.split, .section.split-reverse, .section.bento, .section.bento-mosaic, .section.narrow, .section.wide';
+const LAYOUT_SECTIONS = '.section.split, .section.split-reverse, .section.bento, .section.dark-bento, .section.bento-mosaic, .section.narrow, .section.wide';
 
 /**
  * Sanitize authored markup and build layout wrappers for generic section styles.
@@ -756,7 +787,7 @@ export function decorateSectionLayouts(main) {
   });
 
   main.querySelectorAll('.section.split').forEach(wrapSplit);
-  wrapBento(main.querySelector('.section.bento'));
+  main.querySelectorAll('.section.bento, .section.dark-bento').forEach(wrapBento);
   main.querySelectorAll('.section.bento-mosaic').forEach(wrapBentoMosaic);
   main.querySelectorAll('.section.split-reverse').forEach(wrapSplitReverse);
   main.querySelectorAll('.section.split-reverse, .section.split').forEach((section) => {
@@ -1003,6 +1034,7 @@ async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await loadSections(main);
   if (main) {
+    decorateSectionLayouts(main);
     if (/\/weddings\/?$/.test(window.location.pathname)) {
       document.body.classList.add('weddings');
       loadCSS(`${window.hlx.codeBasePath}/styles/weddings.css`);

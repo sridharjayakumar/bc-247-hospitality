@@ -143,6 +143,10 @@
             "value": "dark"
           },
           {
+            "name": "Dark Bento",
+            "value": "dark-bento"
+          },
+          {
             "name": "Centered",
             "value": "centered"
           },

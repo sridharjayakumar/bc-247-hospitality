@@ -33,6 +33,7 @@
           "options": [
             { "name": "Highlight", "value": "highlight" },
             { "name": "Dark", "value": "dark" },
+            { "name": "Dark Bento", "value": "dark-bento" },
             { "name": "Centered", "value": "centered" },
             { "name": "Hero", "value": "hero" },
             { "name": "Split", "value": "split" },

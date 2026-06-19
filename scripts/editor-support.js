@@ -12,6 +12,7 @@ import {
 import { decorateRichtext } from './editor-support-rte.js';
 import {
   decorateMain,
+  decorateSectionLayouts,
   decorateWeddings,
   initEventsPage,
   isEventsPage,
@@ -50,7 +51,8 @@ async function applyChanges(event) {
       decorateMain(newMain);
       decorateRichtext(newMain);
       await loadSections(newMain);
-      initEventsPage(newMain);
+      decorateSectionLayouts(newMain);
+      if (isEventsPage()) initEventsPage(newMain);
       element.remove();
       newMain.style.display = null;
       // eslint-disable-next-line no-use-before-define
@@ -89,7 +91,8 @@ async function applyChanges(event) {
           decorateSections(parentElement);
           decorateBlocks(parentElement);
           await loadSections(parentElement);
-          initEventsPage(parentElement);
+          decorateSectionLayouts(parentElement);
+          if (isEventsPage()) initEventsPage(parentElement);
           element.remove();
           newSection.style.display = null;
         } else {
@@ -133,6 +136,7 @@ const main = document.querySelector('main');
 if (main) {
   const runLayoutDecoration = async () => {
     await loadSections(main);
+    decorateSectionLayouts(main);
     if (/\/weddings\/?$/.test(window.location.pathname)) {
       document.body.classList.add('weddings');
       loadCSS(`${window.hlx.codeBasePath}/styles/weddings.css`);

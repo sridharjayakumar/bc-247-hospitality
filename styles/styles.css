@@ -651,41 +651,74 @@ main .section.split-reverse .split-copy a.button.link-underline:any-link:hover {
 }
 
 /* Dining page — bento (seasonal + lounge) */
-main .section.bento {
+main .section.bento,
+main .section.dark-bento {
   margin: 0;
   padding: 64px 0;
+}
+
+main .section.bento {
   background-color: var(--light-color);
 }
 
-main .section.bento > div {
+main .section.dark-bento {
+  background-color: var(--dark-color);
+  color: #fff;
+}
+
+main .section.dark-bento:not(:has(.bento-grid)) :is(h2, h3) {
+  color: var(--accent-light);
+}
+
+main .section.dark-bento:not(:has(.bento-grid)) p {
+  color: rgb(255 255 255 / 90%);
+}
+
+main .section.dark-bento:not(:has(.bento-grid)) a:any-link {
+  color: var(--accent-light);
+}
+
+main .section.bento > div,
+main .section.dark-bento > div,
+main .section.bento > .bento-grid,
+main .section.dark-bento > .bento-grid {
   max-width: 1280px;
+  margin-inline: auto;
   padding: 0 24px;
+  box-sizing: border-box;
 }
 
 @media (width >= 900px) {
-  main .section.bento > div {
+  main .section.bento > div,
+  main .section.dark-bento > div,
+  main .section.bento > .bento-grid,
+  main .section.dark-bento > .bento-grid {
     padding: 0 40px;
   }
 }
 
-main .section.bento .bento-grid {
+main .section.bento .bento-grid,
+main .section.dark-bento .bento-grid {
   display: grid;
   gap: 2rem;
 }
 
 @media (width >= 900px) {
-  main .section.bento .bento-grid {
+  main .section.bento .bento-grid,
+  main .section.dark-bento .bento-grid {
     grid-template-columns: 2fr 1fr;
   }
 }
 
-main .section.bento .bento-panel {
+main .section.bento .bento-panel,
+main .section.dark-bento .bento-panel {
   padding: 3rem;
   background-color: #fff;
   border: 1px solid rgb(0 0 0 / 8%);
 }
 
-main .section.bento .bento-panel .section-eyebrow {
+main .section.bento .bento-panel .section-eyebrow,
+main .section.dark-bento .bento-panel .section-eyebrow {
   display: block;
   margin: 0 0 1rem;
   font-family: var(--body-font-family);
@@ -696,32 +729,44 @@ main .section.bento .bento-panel .section-eyebrow {
   color: var(--accent-color);
 }
 
-main .section.bento .bento-panel h3 {
+main .section.bento .bento-panel h3,
+main .section.dark-bento .bento-panel h3 {
   margin: 0 0 1.5rem;
   font-size: clamp(1.75rem, 3vw, 2.125rem);
   color: var(--text-color);
 }
 
-main .section.bento .bento-panel > p {
+main .section.bento .bento-panel > p,
+main .section.dark-bento .bento-panel > p {
   margin: 0 0 2rem;
   max-width: 28rem;
   color: var(--text-color);
 }
 
-main .section.bento .bento-images {
+main .section.bento .bento-images,
+main .section.dark-bento .bento-images {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
-main .section.bento .bento-images img {
+main .section.bento .bento-images picture,
+main .section.dark-bento .bento-images picture {
+  display: block;
+  width: 100%;
+}
+
+main .section.bento .bento-images img,
+main .section.dark-bento .bento-images img {
+  display: block;
   width: 100%;
   height: 12rem;
   object-fit: cover;
   border-radius: 4px;
 }
 
-main .section.bento .bento-aside {
+main .section.bento .bento-aside,
+main .section.dark-bento .bento-aside {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -730,18 +775,21 @@ main .section.bento .bento-aside {
   color: #fff;
 }
 
-main .section.bento .bento-aside h3 {
+main .section.bento .bento-aside h3,
+main .section.dark-bento .bento-aside h3 {
   margin: 0 0 1.5rem;
   font-size: clamp(1.75rem, 3vw, 2.125rem);
   color: #fff;
 }
 
-main .section.bento .bento-aside p {
+main .section.bento .bento-aside p,
+main .section.dark-bento .bento-aside p {
   margin: 0 0 2rem;
   color: rgb(255 255 255 / 90%);
 }
 
-main .section.bento .bento-aside a {
+main .section.bento .bento-aside a,
+main .section.dark-bento .bento-aside a {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -810,6 +858,8 @@ main .section.narrow .button-container {
 
 main .section.wide,
 main .section.bento-mosaic,
+main .section.bento,
+main .section.dark-bento,
 main .section.split-reverse,
 main .section.narrow {
   font-family: var(--body-font-family);
