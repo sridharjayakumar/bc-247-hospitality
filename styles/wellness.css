@@ -1,0 +1,257 @@
+/* Wellness page — Stitch mock (Albergo Pacifa Wellness) */
+/* stylelint-disable no-descending-specificity */
+
+body.wellness {
+  --wellness-primary: #715915;
+  --wellness-primary-container: #8c712c;
+  --wellness-surface: #fcf9f8;
+  --wellness-surface-low: #f6f3f2;
+  --wellness-surface-high: #eae7e7;
+  --wellness-muted: #4d4639;
+  --wellness-dark: #1c1b1b;
+  --wellness-outline: #d0c5b4;
+  --wellness-container: 80rem;
+}
+
+body.wellness {
+  background-color: var(--wellness-surface);
+  color: var(--wellness-dark);
+}
+
+/* —— Hero: immersive sanctuary —— */
+body.wellness main > .section.hero {
+  padding: 0;
+}
+
+body.wellness main > .section.hero > .hero-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+body.wellness .section.hero .hero {
+  min-height: min(52rem, 85vh);
+  max-height: none;
+  padding: calc(var(--nav-height) + 4rem) 1.5rem 4rem;
+}
+
+body.wellness .section.hero .hero h1 {
+  margin-bottom: 1.5rem;
+  font-family: var(--brand-font-family);
+  font-size: clamp(2.5rem, 6vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+body.wellness .section.hero .hero > div:last-child > div > p:first-of-type {
+  max-width: 42rem;
+  font-size: clamp(1.05rem, 2vw, 1.125rem);
+  line-height: 1.65;
+  letter-spacing: normal;
+  opacity: 0.9;
+}
+
+@media (width >= 900px) {
+  body.wellness .section.hero .hero {
+    min-height: 51rem;
+  }
+}
+
+/* —— Intro —— */
+body.wellness main .section.wellness-intro {
+  padding: 6rem 0;
+  background-color: var(--wellness-surface);
+}
+
+body.wellness .section.wellness-intro > div {
+  max-width: var(--wellness-container);
+}
+
+body.wellness .section.wellness-intro h2 {
+  margin-bottom: 2rem;
+  text-align: center;
+  font-family: var(--brand-font-family);
+  font-size: clamp(1.75rem, 4vw, 2rem);
+  font-weight: 600;
+  color: var(--wellness-primary);
+}
+
+body.wellness .section.wellness-intro h2::after {
+  content: '';
+  display: block;
+  width: 6rem;
+  height: 1px;
+  margin: 2rem auto;
+  background-color: var(--wellness-outline);
+}
+
+body.wellness .section.wellness-intro > div > p {
+  max-width: 48rem;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--wellness-muted);
+}
+
+/* —— Split sections (fitness, package, pool) —— */
+body.wellness main .section.wellness-fitness,
+body.wellness main .section.wellness-package,
+body.wellness main .section.wellness-pool {
+  padding: 6rem 0;
+}
+
+body.wellness main .section.wellness-fitness {
+  background-color: var(--wellness-surface-low);
+}
+
+body.wellness main .section.wellness-pool {
+  background-color: var(--wellness-surface-high);
+}
+
+body.wellness main .section.wellness-package {
+  background-color: var(--wellness-surface);
+}
+
+body.wellness .section:is(.wellness-fitness, .wellness-package, .wellness-pool) > div {
+  max-width: var(--wellness-container);
+}
+
+body.wellness .section.wellness-package .split-grid {
+  border: 1px solid rgb(208 197 180 / 20%);
+  background-color: #fff;
+}
+
+body.wellness .section.wellness-package .split-copy {
+  padding: 3rem;
+}
+
+@media (width >= 900px) {
+  body.wellness .section.wellness-package .split-copy {
+    padding: 4rem;
+  }
+}
+
+body.wellness .section:is(.wellness-fitness, .wellness-pool) .split-media img,
+body.wellness .section.wellness-package .split-media img {
+  aspect-ratio: 4 / 3;
+  border: 1px solid rgb(208 197 180 / 10%);
+  border-radius: 0;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 6%);
+}
+
+body.wellness .section.wellness-package .split-media img {
+  aspect-ratio: auto;
+  height: 100%;
+  min-height: 20rem;
+  border: none;
+  box-shadow: none;
+}
+
+body.wellness .section:is(.wellness-fitness, .wellness-package, .wellness-pool) .split-copy h2 {
+  margin-bottom: 2rem;
+  font-family: var(--brand-font-family);
+  font-size: clamp(1.75rem, 3vw, 2rem);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--wellness-dark);
+}
+
+body.wellness .section.wellness-package .split-copy h2 {
+  color: var(--wellness-primary);
+}
+
+body.wellness .section:is(.wellness-fitness, .wellness-pool) .split-copy h2::after {
+  content: '';
+  display: block;
+  width: 4rem;
+  height: 1px;
+  margin-top: 2rem;
+  background-color: var(--wellness-primary);
+}
+
+body.wellness .section:is(.wellness-fitness, .wellness-package, .wellness-pool) .split-copy > p:not(:has(a)) {
+  margin-bottom: 2rem;
+  max-width: none;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--wellness-muted);
+}
+
+/* Feature grid (fitness + pool) */
+body.wellness .wellness-features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+@media (width >= 600px) {
+  body.wellness .wellness-features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+body.wellness .wellness-features li {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+body.wellness .wellness-features .wellness-feature-icon {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  color: var(--wellness-primary);
+}
+
+body.wellness .wellness-caption {
+  margin: 0;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--wellness-muted);
+}
+
+/* Package list */
+body.wellness .wellness-package-list {
+  margin: 0 0 2.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+body.wellness .wellness-package-list li {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--wellness-dark);
+}
+
+body.wellness .wellness-package-list .wellness-list-icon {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  font-size: 1.25rem;
+  color: var(--wellness-primary-container);
+}
+
+body.wellness .section.wellness-package .button-container a.button:any-link {
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 0;
+  background-color: var(--wellness-dark);
+  font-size: 0.875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--wellness-surface);
+}
+
+body.wellness .section.wellness-package .button-container a.button:any-link:hover {
+  background-color: var(--wellness-primary);
+  color: var(--wellness-surface);
+}

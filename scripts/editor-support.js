@@ -13,8 +13,10 @@ import {
   decorateMain,
   decorateSectionLayouts,
   initEventsPage,
+  initWellnessPage,
   initWeddingsPage,
   isEventsPage,
+  isWellnessPage,
   isWeddingsPage,
 } from './scripts.js';
 
@@ -52,6 +54,7 @@ async function applyChanges(event) {
       decorateRichtext(newMain);
       await loadSections(newMain);
       if (isWeddingsPage()) initWeddingsPage(newMain);
+      else if (isWellnessPage()) initWellnessPage(newMain);
       else if (isEventsPage()) initEventsPage(newMain);
       else decorateSectionLayouts(newMain);
       element.remove();
@@ -93,6 +96,7 @@ async function applyChanges(event) {
           decorateBlocks(parentElement);
           await loadSections(parentElement);
           if (isWeddingsPage()) initWeddingsPage(parentElement);
+          else if (isWellnessPage()) initWellnessPage(parentElement);
           else if (isEventsPage()) initEventsPage(parentElement);
           else decorateSectionLayouts(parentElement);
           element.remove();
@@ -139,6 +143,7 @@ if (main) {
   const runLayoutDecoration = async () => {
     await loadSections(main);
     if (isWeddingsPage()) initWeddingsPage(main);
+    else if (isWellnessPage()) initWellnessPage(main);
     else if (isEventsPage()) initEventsPage(main);
     else decorateSectionLayouts(main);
   };

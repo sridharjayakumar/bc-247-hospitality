@@ -273,6 +273,53 @@ const WEDDINGS_VENUE_TAGS = ['Indoor Elegance', 'Coastal Al Fresco'];
 const WEDDINGS_VENUE_ICONS = ['fa-users', 'fa-champagne-glasses'];
 
 /**
+ * Wellness page — section tags + feature lists from Stitch layout.
+ * @param {Element} main
+ */
+export function decorateWellness(main) {
+  main.querySelectorAll('.section.centered').forEach((section) => {
+    const h2 = section.querySelector('h2');
+    if (h2?.textContent?.includes('Relaxing')) {
+      section.classList.add('wellness-intro');
+    }
+  });
+
+  main.querySelectorAll('.section.split-reverse, .section.split').forEach((section) => {
+    const heading = section.querySelector('h2');
+    const text = heading?.textContent || '';
+    if (text.includes('Fitness')) {
+      section.classList.add('wellness-fitness');
+    } else if (text.includes('Rejuvenation')) {
+      section.classList.add('wellness-package');
+    } else if (text.includes('Infinity Pool')) {
+      section.classList.add('wellness-pool');
+    }
+  });
+
+  main.querySelectorAll('.section.wellness-fitness ul, .section.wellness-pool ul').forEach((list) => {
+    if (list.classList.contains('wellness-package-list')) return;
+    list.classList.add('wellness-features');
+    list.querySelectorAll('li').forEach((li) => {
+      if (li.querySelector('.wellness-feature-icon')) return;
+      const icon = document.createElement('i');
+      icon.className = 'wellness-feature-icon fa-solid fa-circle-check';
+      icon.setAttribute('aria-hidden', 'true');
+      li.prepend(icon);
+    });
+  });
+
+  main.querySelectorAll('.wellness-package-list').forEach((list) => {
+    list.querySelectorAll('li').forEach((li) => {
+      if (li.querySelector('.wellness-list-icon')) return;
+      const icon = document.createElement('i');
+      icon.className = 'wellness-list-icon fa-solid fa-chevron-right';
+      icon.setAttribute('aria-hidden', 'true');
+      li.prepend(icon);
+    });
+  });
+}
+
+/**
  * Weddings page — DOM enhancements for Stitch layout.
  * @param {Element} main
  */
@@ -697,6 +744,45 @@ export function initWeddingsPage(main) {
 }
 
 /**
+ * True on the wellness page (edge URL, author content path, or UE canvas).
+ * @param {Document} [doc]
+ */
+export function isWellnessPage(doc = document) {
+  const { pathname } = window.location;
+  if (/\/wellness(?:\.html)?\/?$/.test(pathname)) return true;
+  if (/\/content\/albergo-pacifica\/wellness(?:\.html)?\/?$/.test(pathname)) return true;
+
+  const canonical = doc.querySelector('link[rel="canonical"]')?.href;
+  if (canonical) {
+    try {
+      const canonicalPath = new URL(canonical, window.location.origin).pathname;
+      if (/\/wellness(?:\.html)?\/?$/.test(canonicalPath)) return true;
+    } catch (e) {
+      // ignore invalid canonical URL
+    }
+  }
+
+  const mainResource = doc.querySelector('main')?.getAttribute('data-aue-resource');
+  if (mainResource && /\/content\/albergo-pacifica\/wellness(?:\/|$)/.test(mainResource)) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Shared wellness page decoration for preview, publish, and Universal Editor.
+ * @param {Element} main
+ */
+export function initWellnessPage(main) {
+  if (!main || !isWellnessPage()) return;
+  document.body.classList.add('wellness');
+  loadCSS(`${window.hlx.codeBasePath}/styles/wellness.css`);
+  decorateSectionLayouts(main);
+  decorateWellness(main);
+}
+
+/**
  * True on the meetings & events page (edge URL, author content path, or UE canvas).
  * @param {Document} [doc]
  */
@@ -1026,6 +1112,8 @@ async function loadLazy(doc) {
   if (main) {
     if (isWeddingsPage()) {
       initWeddingsPage(main);
+    } else if (isWellnessPage()) {
+      initWellnessPage(main);
     } else if (isEventsPage()) {
       initEventsPage(main);
     } else {
