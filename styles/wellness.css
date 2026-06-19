@@ -18,43 +18,7 @@ body.wellness {
   color: var(--wellness-dark);
 }
 
-/* —— Hero: immersive sanctuary —— */
-body.wellness main > .section.hero {
-  padding: 0;
-}
-
-body.wellness main > .section.hero > .hero-wrapper {
-  max-width: none;
-  padding: 0;
-}
-
-body.wellness .section.hero .hero {
-  min-height: min(52rem, 85vh);
-  max-height: none;
-  padding: calc(var(--nav-height) + 4rem) 1.5rem 4rem;
-}
-
-body.wellness .section.hero .hero h1 {
-  margin-bottom: 1.5rem;
-  font-family: var(--brand-font-family);
-  font-size: clamp(2.5rem, 6vw, 3rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-body.wellness .section.hero .hero > div:last-child > div > p:first-of-type {
-  max-width: 42rem;
-  font-size: clamp(1.05rem, 2vw, 1.125rem);
-  line-height: 1.65;
-  letter-spacing: normal;
-  opacity: 0.9;
-}
-
-@media (width >= 900px) {
-  body.wellness .section.hero .hero {
-    min-height: 51rem;
-  }
-}
+/* Hero uses shared blocks/hero/hero.css (same as index, dining, weddings, etc.) */
 
 /* —— Intro —— */
 body.wellness main .section.wellness-intro {
