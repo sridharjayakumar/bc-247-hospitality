@@ -6,16 +6,16 @@ import {
   decorateSections,
   loadBlock,
   loadScript,
-  loadCSS,
   loadSections,
 } from './aem.js';
 import { decorateRichtext } from './editor-support-rte.js';
 import {
   decorateMain,
   decorateSectionLayouts,
-  decorateWeddings,
   initEventsPage,
+  initWeddingsPage,
   isEventsPage,
+  isWeddingsPage,
 } from './scripts.js';
 
 let promiseChanges$ = Promise.resolve();
@@ -51,8 +51,9 @@ async function applyChanges(event) {
       decorateMain(newMain);
       decorateRichtext(newMain);
       await loadSections(newMain);
-      decorateSectionLayouts(newMain);
-      if (isEventsPage()) initEventsPage(newMain);
+      if (isWeddingsPage()) initWeddingsPage(newMain);
+      else if (isEventsPage()) initEventsPage(newMain);
+      else decorateSectionLayouts(newMain);
       element.remove();
       newMain.style.display = null;
       // eslint-disable-next-line no-use-before-define
@@ -91,8 +92,9 @@ async function applyChanges(event) {
           decorateSections(parentElement);
           decorateBlocks(parentElement);
           await loadSections(parentElement);
-          decorateSectionLayouts(parentElement);
-          if (isEventsPage()) initEventsPage(parentElement);
+          if (isWeddingsPage()) initWeddingsPage(parentElement);
+          else if (isEventsPage()) initEventsPage(parentElement);
+          else decorateSectionLayouts(parentElement);
           element.remove();
           newSection.style.display = null;
         } else {
@@ -136,15 +138,9 @@ const main = document.querySelector('main');
 if (main) {
   const runLayoutDecoration = async () => {
     await loadSections(main);
-    decorateSectionLayouts(main);
-    if (/\/weddings\/?$/.test(window.location.pathname)) {
-      document.body.classList.add('weddings');
-      loadCSS(`${window.hlx.codeBasePath}/styles/weddings.css`);
-      decorateWeddings(main);
-    }
-    if (isEventsPage()) {
-      initEventsPage(main);
-    }
+    if (isWeddingsPage()) initWeddingsPage(main);
+    else if (isEventsPage()) initEventsPage(main);
+    else decorateSectionLayouts(main);
   };
   if (document.readyState === 'complete') runLayoutDecoration();
   else window.addEventListener('load', () => { runLayoutDecoration(); });

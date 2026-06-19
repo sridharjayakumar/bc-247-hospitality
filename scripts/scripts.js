@@ -178,6 +178,24 @@ function normalizeAmenityDescription(item, title) {
   desc.textContent = text;
 }
 
+function getSectionWrapper(section) {
+  return section.querySelector('.default-content-wrapper')
+    || section.querySelector(':scope > div:not(.section-metadata)');
+}
+
+/** UE wraps components in instrumented divs; published HTML is often flat. */
+function getLayoutContentRoot(wrapper) {
+  if (!wrapper) return wrapper;
+  const { children } = wrapper;
+  if (children.length === 1 && children[0].tagName === 'DIV') {
+    const child = children[0];
+    if (child.querySelector('h2, h3') && !child.matches('.split-grid, .bento-grid, .bento-mosaic-grid')) {
+      return child;
+    }
+  }
+  return wrapper;
+}
+
 /**
  * @param {Element} item
  * @param {string} iconName
@@ -200,16 +218,17 @@ function createAmenityIcon(item, iconName) {
  */
 export function decorateFeatureGrid(main) {
   main.querySelectorAll('.section.feature-grid').forEach((section) => {
-    const wrapper = section.querySelector(':scope > div');
+    const wrapper = getSectionWrapper(section);
     if (!wrapper) return;
+    const root = getLayoutContentRoot(wrapper);
 
-    const heading = wrapper.querySelector(':scope > h2');
+    const heading = root.querySelector(':scope > h2');
     if (heading) heading.classList.add('feature-grid-heading');
 
-    const lead = wrapper.querySelector(':scope > p');
+    const lead = root.querySelector(':scope > p');
     if (lead && !lead.closest('li')) lead.classList.add('feature-grid-lead');
 
-    const list = wrapper.querySelector('ul');
+    const list = root.querySelector('ul');
     if (!list || list.dataset.featureGridDecorated === 'true') return;
 
     list.classList.add('feature-grid-list');
@@ -252,7 +271,6 @@ export const decorateAmenities = decorateFeatureGrid;
 
 const WEDDINGS_VENUE_TAGS = ['Indoor Elegance', 'Coastal Al Fresco'];
 const WEDDINGS_VENUE_ICONS = ['fa-users', 'fa-champagne-glasses'];
-const CULINARY_FEATURE_ICONS = ['fa-check', 'fa-wine-glass'];
 
 /**
  * Weddings page — DOM enhancements for Stitch layout.
@@ -264,7 +282,7 @@ export function decorateWeddings(main) {
   if (hero) {
     const ctas = [...hero.querySelectorAll('p')].find((p) => p.querySelectorAll('a[href^="mailto:"]').length >= 2);
     if (ctas) {
-      ctas.classList.add('weddings-hero-ctas');
+      ctas.classList.add('button-container');
       const links = ctas.querySelectorAll('a');
       links[0]?.classList.add('button');
       if (links[1]) {
@@ -302,71 +320,18 @@ export function decorateWeddings(main) {
     });
   }
 
-  const amenitiesSection = main.querySelector('.section.feature-grid');
-  if (amenitiesSection && !amenitiesSection.querySelector('.weddings-amenities-layout')) {
-    amenitiesSection.classList.add('weddings-amenities');
-    const wrapper = amenitiesSection.querySelector(':scope > div');
-    if (wrapper) {
-      const list = wrapper.querySelector('ul');
-      const introBits = [...wrapper.children].filter((el) => el !== list);
-      const layout = document.createElement('div');
-      layout.className = 'weddings-amenities-layout';
-      const intro = document.createElement('div');
-      intro.className = 'weddings-amenities-intro';
-      introBits.forEach((el) => intro.append(el));
-      layout.append(intro);
-      if (list) layout.append(list);
-      wrapper.replaceChildren(layout);
-    }
-  }
-
   const culinarySection = main.querySelector('.section.split-reverse');
   if (culinarySection) {
     culinarySection.classList.add('weddings-culinary');
-    const copy = culinarySection.querySelector('.split-copy')
-      || culinarySection.querySelector('.default-content-wrapper')
-      || culinarySection.querySelector(':scope > div:not(.section-metadata)');
-    if (copy) {
-      const h2 = copy.querySelector('h2');
-      if (h2 && !copy.querySelector('.split-quote')) {
-        const quote = document.createElement('blockquote');
-        quote.className = 'split-quote';
-        quote.textContent = '“A feast for the senses, crafted from the bounty of the bay.”';
-        h2.insertAdjacentElement('afterend', quote);
-      }
-      const list = copy.querySelector('ul');
-      if (list && !list.classList.contains('culinary-features')) {
-        list.classList.add('culinary-features');
-        list.querySelectorAll('li').forEach((li, index) => {
-          li.classList.add('culinary-feature');
-          const icon = document.createElement('i');
-          icon.className = `culinary-feature-icon fa-solid ${CULINARY_FEATURE_ICONS[index] || 'fa-check'}`;
-          icon.setAttribute('aria-hidden', 'true');
-          const strong = li.querySelector('strong');
-          if (strong) {
-            const label = strong.textContent.replace(/:$/, '').trim();
-            let descText = '';
-            let afterStrong = false;
-            li.childNodes.forEach((node) => {
-              if (node === strong) {
-                afterStrong = true;
-                return;
-              }
-              if (afterStrong) descText += node.textContent || '';
-            });
-            descText = descText.replace(/^:\s*/, '').trim();
-            const title = document.createElement('p');
-            const titleStrong = document.createElement('strong');
-            titleStrong.textContent = label;
-            title.append(titleStrong);
-            const desc = document.createElement('p');
-            desc.textContent = descText;
-            li.replaceChildren(icon, title, desc);
-          } else {
-            li.prepend(icon);
-          }
-        });
-      }
+    const media = culinarySection.querySelector('.split-media');
+    if (media && !media.querySelector('.split-media-inner')) {
+      const inner = document.createElement('div');
+      inner.className = 'split-media-inner';
+      const backdrop = document.createElement('div');
+      backdrop.className = 'weddings-culinary-backdrop';
+      backdrop.setAttribute('aria-hidden', 'true');
+      [...media.children].forEach((el) => inner.append(el));
+      media.replaceChildren(backdrop, inner);
     }
   }
 
@@ -410,11 +375,6 @@ export function decorateWeddings(main) {
   });
 }
 
-function getSectionWrapper(section) {
-  return section.querySelector('.default-content-wrapper')
-    || section.querySelector(':scope > div:not(.section-metadata)');
-}
-
 function sanitizeSectionHtml(html) {
   return html
     .replace(/<\/?motion\.div\b/gi, (tag) => tag.replace(/motion\./i, ''))
@@ -440,19 +400,6 @@ function findMediaNode(wrapper) {
   const imageP = [...wrapper.querySelectorAll('p')].find((p) => p.querySelector('picture, img'));
   if (imageP) return imageP;
   return [...wrapper.children].find((el) => el.querySelector('picture, img'));
-}
-
-/** UE wraps components in instrumented divs; published HTML is often flat. */
-function getLayoutContentRoot(wrapper) {
-  if (!wrapper) return wrapper;
-  const { children } = wrapper;
-  if (children.length === 1 && children[0].tagName === 'DIV') {
-    const child = children[0];
-    if (child.querySelector('h2, h3') && !child.matches('.split-grid, .bento-grid, .bento-mosaic-grid')) {
-      return child;
-    }
-  }
-  return wrapper;
 }
 
 function isMediaOnlyBranch(el) {
@@ -709,10 +656,53 @@ function wrapBentoMosaic(section) {
 }
 
 /**
+ * True on the weddings page (edge URL, author content path, or UE canvas).
+ * @param {Document} [doc]
+ */
+export function isWeddingsPage(doc = document) {
+  const { pathname } = window.location;
+  if (/\/weddings(?:\.html)?\/?$/.test(pathname)) return true;
+  if (/\/events\/weddings(?:\.html)?\/?$/.test(pathname)) return true;
+  if (/\/content\/albergo-pacifica\/(?:events\/)?weddings(?:\.html)?\/?$/.test(pathname)) return true;
+
+  const canonical = doc.querySelector('link[rel="canonical"]')?.href;
+  if (canonical) {
+    try {
+      const canonicalPath = new URL(canonical, window.location.origin).pathname;
+      if (/\/(?:events\/)?weddings(?:\.html)?\/?$/.test(canonicalPath)) return true;
+    } catch (e) {
+      // ignore invalid canonical URL
+    }
+  }
+
+  const mainResource = doc.querySelector('main')?.getAttribute('data-aue-resource');
+  if (mainResource && /\/content\/albergo-pacifica\/(?:events\/)?weddings(?:\/|$)/.test(mainResource)) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Shared weddings page decoration for preview, publish, and Universal Editor.
+ * @param {Element} main
+ */
+export function initWeddingsPage(main) {
+  if (!main || !isWeddingsPage()) return;
+  document.body.classList.add('weddings');
+  loadCSS(`${window.hlx.codeBasePath}/styles/weddings.css`);
+  decorateFeatureGrid(main);
+  decorateSectionLayouts(main);
+  decorateWeddings(main);
+}
+
+/**
  * True on the meetings & events page (edge URL, author content path, or UE canvas).
  * @param {Document} [doc]
  */
 export function isEventsPage(doc = document) {
+  if (isWeddingsPage(doc)) return false;
+
   const { pathname } = window.location;
   if (/\/events(?:\.html)?\/?$/.test(pathname)) return true;
   if (/\/content\/albergo-pacifica\/events(?:\.html)?\/?$/.test(pathname)) return true;
@@ -728,7 +718,7 @@ export function isEventsPage(doc = document) {
   }
 
   const mainResource = doc.querySelector('main')?.getAttribute('data-aue-resource');
-  if (mainResource && /\/content\/albergo-pacifica\/events(?:\/|$)/.test(mainResource)) return true;
+  if (mainResource && /\/content\/albergo-pacifica\/events(?:\.html)?\/?$/.test(mainResource)) return true;
 
   return false;
 }
@@ -1034,14 +1024,12 @@ async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await loadSections(main);
   if (main) {
-    decorateSectionLayouts(main);
-    if (/\/weddings\/?$/.test(window.location.pathname)) {
-      document.body.classList.add('weddings');
-      loadCSS(`${window.hlx.codeBasePath}/styles/weddings.css`);
-      decorateWeddings(main);
-    }
-    if (isEventsPage()) {
+    if (isWeddingsPage()) {
+      initWeddingsPage(main);
+    } else if (isEventsPage()) {
       initEventsPage(main);
+    } else {
+      decorateSectionLayouts(main);
     }
   }
 
