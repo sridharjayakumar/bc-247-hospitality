@@ -598,16 +598,40 @@ function wrapSplitReverse(section) {
   styleSplitCtas(copy);
 }
 
-function wrapBentoMosaic(section) {
-  if (!section || section.querySelector('.bento-mosaic-grid')) return;
-  const wrapper = getSectionWrapper(section);
-  if (!wrapper) return;
+function getSectionContentChildren(section) {
+  return [...section.children].filter(
+    (el) => !el.classList?.contains('section-metadata')
+      && (el.hasAttribute('data-aue-resource') || el.classList.contains('default-content-wrapper')),
+  );
+}
+
+function wrapBentoMosaicFromComponents(section, contentChildren) {
+  const tileClasses = ['bento-mosaic-tile', 'bento-mosaic-accent', 'bento-mosaic-bar'];
+  const [headerSource, ...tileSources] = contentChildren;
+  headerSource.classList.add('bento-mosaic-header');
+
+  const grid = document.createElement('div');
+  grid.className = 'bento-mosaic-grid';
+  tileSources.forEach((source, index) => {
+    source.classList.add(tileClasses[index] || 'bento-mosaic-tile');
+    grid.append(source);
+  });
+  headerSource.after(grid);
+}
+
+function wrapBentoMosaicFromFlatWrapper(section, wrapper) {
   const h2 = wrapper.querySelector('h2');
   const h3s = [...wrapper.querySelectorAll('h3')];
   if (!h2 || h3s.length < 2) return;
 
   const header = document.createElement('div');
   header.className = 'bento-mosaic-header';
+  const eyebrowEl = wrapper.querySelector('.section-eyebrow');
+  if (eyebrowEl) {
+    const eyebrowP = eyebrowEl.closest('p') === eyebrowEl ? eyebrowEl : eyebrowEl.closest('p');
+    if (eyebrowP) header.append(eyebrowP);
+    else header.append(eyebrowEl);
+  }
   header.append(h2);
 
   const grid = document.createElement('div');
@@ -617,6 +641,15 @@ function wrapBentoMosaic(section) {
   h3s.forEach((h3, index) => {
     const tile = document.createElement('div');
     tile.className = tileClasses[index] || 'bento-mosaic-tile';
+
+    if (index === 0) {
+      let prev = h3.previousElementSibling;
+      while (prev?.tagName === 'P' && prev.querySelector('picture, img')) {
+        tile.append(prev);
+        prev = h3.previousElementSibling;
+      }
+    }
+
     let node = h3;
     while (node) {
       const next = node.nextElementSibling;
@@ -628,6 +661,68 @@ function wrapBentoMosaic(section) {
   });
 
   wrapper.replaceChildren(header, grid);
+}
+
+function wrapBentoMosaic(section) {
+  if (!section || section.querySelector('.bento-mosaic-grid')) return;
+
+  const contentChildren = getSectionContentChildren(section);
+  if (contentChildren.length >= 3) {
+    wrapBentoMosaicFromComponents(section, contentChildren);
+    return;
+  }
+
+  const wrapper = getSectionWrapper(section);
+  if (!wrapper) return;
+  wrapBentoMosaicFromFlatWrapper(section, wrapper);
+}
+
+/**
+ * True on the meetings & events page (edge URL, author content path, or UE canvas).
+ * @param {Document} [doc]
+ */
+export function isEventsPage(doc = document) {
+  const { pathname } = window.location;
+  if (/\/events(?:\.html)?\/?$/.test(pathname)) return true;
+  if (/\/content\/albergo-pacifica\/events(?:\.html)?\/?$/.test(pathname)) return true;
+
+  const canonical = doc.querySelector('link[rel="canonical"]')?.href;
+  if (canonical) {
+    try {
+      const canonicalPath = new URL(canonical, window.location.origin).pathname;
+      if (/\/events(?:\.html)?\/?$/.test(canonicalPath)) return true;
+    } catch (e) {
+      // ignore invalid canonical URL
+    }
+  }
+
+  const mainResource = doc.querySelector('main')?.getAttribute('data-aue-resource');
+  if (mainResource && /\/content\/albergo-pacifica\/events(?:\/|$)/.test(mainResource)) return true;
+
+  return false;
+}
+
+/** Events page: bento style in AEM maps to the bento-mosaic layout. */
+export function ensureEventsBentoMosaic(main) {
+  if (!isEventsPage()) return;
+  main.querySelectorAll('.section.bento:not(.bento-mosaic)').forEach((section) => {
+    section.classList.remove('bento');
+    section.classList.add('bento-mosaic');
+  });
+}
+
+/**
+ * Shared events page decoration for preview, publish, and Universal Editor.
+ * @param {Element} main
+ */
+export function initEventsPage(main) {
+  if (!main || !isEventsPage()) return;
+  document.body.classList.add('events');
+  loadCSS(`${window.hlx.codeBasePath}/styles/events.css`);
+  ensureEventsBentoMosaic(main);
+  decorateFeatureGrid(main);
+  decorateSectionLayouts(main);
+  decorateEvents(main);
 }
 
 function decorateNarrowList(section) {
@@ -804,24 +899,6 @@ export function decorateEvents(main) {
         accent.append(cta);
       }
     }
-
-    const bar = bentoSection.querySelector('.bento-mosaic-bar');
-    if (bar && !bar.querySelector('.events-concierge-avatars')) {
-      const avatars = document.createElement('div');
-      avatars.className = 'events-concierge-avatars';
-      avatars.setAttribute('aria-hidden', 'true');
-      ['/content/dam/albergo-pacifica/events-planner-1.jpg',
-        '/content/dam/albergo-pacifica/events-planner-2.jpg',
-        '/content/dam/albergo-pacifica/events-planner-3.jpg'].forEach((src, i) => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = `Event concierge ${i + 1}`;
-        img.loading = 'lazy';
-        img.className = 'events-concierge-avatar';
-        avatars.append(img);
-      });
-      bar.append(avatars);
-    }
   }
 
   const weddingsSection = main.querySelector('.section.split-reverse');
@@ -893,9 +970,7 @@ export function decorateMain(main) {
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
-const isEventsPage = () => /\/events\/?$/.test(window.location.pathname);
-
-async function loadEager(doc) {
+const loadEager = async (doc) => {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
@@ -916,7 +991,7 @@ async function loadEager(doc) {
   } catch (e) {
     // do nothing
   }
-}
+};
 
 /**
  * Loads everything that doesn't need to be delayed.
@@ -928,24 +1003,13 @@ async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await loadSections(main);
   if (main) {
-    if (isEventsPage()) {
-      const bentoSection = main.querySelector('.section.bento:not(.bento-mosaic)');
-      if (bentoSection) {
-        bentoSection.classList.remove('bento');
-        bentoSection.classList.add('bento-mosaic');
-      }
-    }
-    decorateFeatureGrid(main);
-    decorateSectionLayouts(main);
     if (/\/weddings\/?$/.test(window.location.pathname)) {
       document.body.classList.add('weddings');
       loadCSS(`${window.hlx.codeBasePath}/styles/weddings.css`);
       decorateWeddings(main);
     }
     if (isEventsPage()) {
-      document.body.classList.add('events');
-      loadCSS(`${window.hlx.codeBasePath}/styles/events.css`);
-      decorateEvents(main);
+      initEventsPage(main);
     }
   }
 

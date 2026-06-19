@@ -11,11 +11,10 @@ import {
 } from './aem.js';
 import { decorateRichtext } from './editor-support-rte.js';
 import {
-  decorateFeatureGrid,
   decorateMain,
-  decorateSectionLayouts,
-  decorateEvents,
   decorateWeddings,
+  initEventsPage,
+  isEventsPage,
 } from './scripts.js';
 
 let promiseChanges$ = Promise.resolve();
@@ -51,8 +50,7 @@ async function applyChanges(event) {
       decorateMain(newMain);
       decorateRichtext(newMain);
       await loadSections(newMain);
-      decorateFeatureGrid(newMain);
-      decorateSectionLayouts(newMain);
+      initEventsPage(newMain);
       element.remove();
       newMain.style.display = null;
       // eslint-disable-next-line no-use-before-define
@@ -91,8 +89,7 @@ async function applyChanges(event) {
           decorateSections(parentElement);
           decorateBlocks(parentElement);
           await loadSections(parentElement);
-          decorateFeatureGrid(parentElement);
-          decorateSectionLayouts(parentElement);
+          initEventsPage(parentElement);
           element.remove();
           newSection.style.display = null;
         } else {
@@ -134,26 +131,19 @@ decorateRichtext();
 // Run layout decoration after UE preview DOM is ready (instrumented component wrappers)
 const main = document.querySelector('main');
 if (main) {
-  const runLayoutDecoration = () => {
-    if (/\/events\/?$/.test(window.location.pathname)) {
-      document.body.classList.add('events');
-      loadCSS(`${window.hlx.codeBasePath}/styles/events.css`);
-    }
-    decorateFeatureGrid(main);
-    decorateSectionLayouts(main);
+  const runLayoutDecoration = async () => {
+    await loadSections(main);
     if (/\/weddings\/?$/.test(window.location.pathname)) {
       document.body.classList.add('weddings');
       loadCSS(`${window.hlx.codeBasePath}/styles/weddings.css`);
       decorateWeddings(main);
     }
-    if (/\/events\/?$/.test(window.location.pathname)) {
-      document.body.classList.add('events');
-      loadCSS(`${window.hlx.codeBasePath}/styles/events.css`);
-      decorateEvents(main);
+    if (isEventsPage()) {
+      initEventsPage(main);
     }
   };
   if (document.readyState === 'complete') runLayoutDecoration();
-  else window.addEventListener('load', runLayoutDecoration);
+  else window.addEventListener('load', () => { runLayoutDecoration(); });
 }
 // in cases where the block decoration is not done in one synchronous iteration we need to listen
 // for new richtext-instrumented elements. this happens for example when using experimentation.

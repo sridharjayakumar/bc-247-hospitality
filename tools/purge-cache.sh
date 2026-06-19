@@ -12,12 +12,17 @@
 #   ./tools/purge-cache.sh all                      # Purge entire CDN cache
 #
 # Options:
+#   stage    Target the stage environment (publish-p34810-e2076639)
+#   prod     Target the production environment (publish-p34810-e2076638, default)
 #   --soft   Use soft purge (serves stale content while revalidating)
 #   --hard   Use hard purge (default, blocks until origin responds)
 
 set -euo pipefail
 
-PUBLISH_ORIGIN="https://publish-p34810-e2076638.adobeaemcloud.com"
+PROD_ORIGIN="https://publish-p34810-e2076638.adobeaemcloud.com"
+STAGE_ORIGIN="https://publish-p34810-e2076639.adobeaemcloud.com"
+PURGE_ENV="prod"
+PUBLISH_ORIGIN="$PROD_ORIGIN"
 PURGE_KEY="${CDN_PURGEKEY:-}"
 
 if [ -z "$PURGE_KEY" ]; then
@@ -32,6 +37,8 @@ PURGE_TARGET=""
 
 while [[ $# -gt 0 ]]; do
   case $1 in
+    stage)  PURGE_ENV="stage"; PUBLISH_ORIGIN="$STAGE_ORIGIN"; shift ;;
+    prod)   PURGE_ENV="prod"; PUBLISH_ORIGIN="$PROD_ORIGIN"; shift ;;
     --soft) PURGE_MODE="soft"; shift ;;
     --hard) PURGE_MODE="hard"; shift ;;
     url)    PURGE_TYPE="url"; PURGE_TARGET="${2:-}"; shift 2 ;;
@@ -42,9 +49,11 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [ -z "$PURGE_TYPE" ]; then
-  echo "Usage: $0 [--soft|--hard] <url PATH|tag KEYS|all>"
+  echo "Usage: $0 [stage|prod] [--soft|--hard] <url PATH|tag KEYS|all>"
   exit 1
 fi
+
+echo "Environment: ${PURGE_ENV} (${PUBLISH_ORIGIN})"
 
 case $PURGE_TYPE in
   url)

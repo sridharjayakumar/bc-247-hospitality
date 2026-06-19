@@ -210,6 +210,14 @@ body.events .section.bento-mosaic.events-services > div {
   padding: 0;
 }
 
+body.events .section.bento-mosaic.events-services > .bento-mosaic-header,
+body.events .section.bento-mosaic.events-services > .bento-mosaic-grid {
+  max-width: var(--events-container);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+}
+
 body.events .section.bento-mosaic.events-services .bento-mosaic-header {
   margin-bottom: 4rem;
   text-align: left;
@@ -234,13 +242,41 @@ body.events .section.bento-mosaic.events-services .bento-mosaic-header h2 {
 }
 
 body.events .section.bento-mosaic.events-services .bento-mosaic-grid {
+  display: grid;
   gap: var(--events-gutter);
 }
 
+@media (width >= 900px) {
+  body.events .section.bento-mosaic.events-services .bento-mosaic-grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  body.events .section.bento-mosaic.events-services .bento-mosaic-tile {
+    grid-column: span 8;
+  }
+
+  body.events .section.bento-mosaic.events-services .bento-mosaic-accent {
+    grid-column: span 4;
+  }
+
+  body.events .section.bento-mosaic.events-services .bento-mosaic-bar {
+    grid-column: span 12;
+  }
+}
+
 body.events .section.bento-mosaic.events-services .bento-mosaic-tile {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
   padding: 3rem;
   background-color: #fff;
   border: 1px solid rgb(208 197 180 / 10%);
+}
+
+@media (width >= 900px) {
+  body.events .section.bento-mosaic.events-services .bento-mosaic-tile {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 body.events .section.bento-mosaic.events-services .bento-mosaic-tile-media img {
@@ -335,9 +371,22 @@ body.events .section.bento-mosaic.events-services a.bento-mosaic-accent-cta:hove
 }
 
 body.events .section.bento-mosaic.events-services .bento-mosaic-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-start;
   padding: 3rem;
   background-color: var(--events-surface-dim);
   border: 1px solid rgb(208 197 180 / 10%);
+}
+
+@media (width >= 900px) {
+  body.events .section.bento-mosaic.events-services .bento-mosaic-bar {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
 body.events .section.bento-mosaic.events-services .bento-mosaic-bar h3 {
@@ -352,41 +401,6 @@ body.events .section.bento-mosaic.events-services .bento-mosaic-bar p {
   max-width: 36rem;
   margin: 0;
   color: var(--events-muted);
-}
-
-body.events .section.bento-mosaic.events-services .bento-mosaic-bar {
-  flex-wrap: wrap;
-}
-
-@media (width >= 900px) {
-  body.events .section.bento-mosaic.events-services .bento-mosaic-bar {
-    flex-wrap: nowrap;
-  }
-}
-
-body.events .section.bento-mosaic.events-services .events-concierge-avatars {
-  display: flex;
-  margin-top: 2rem;
-}
-
-@media (width >= 900px) {
-  body.events .section.bento-mosaic.events-services .events-concierge-avatars {
-    margin-top: 0;
-  }
-}
-
-body.events .section.bento-mosaic.events-services .events-concierge-avatar {
-  display: block;
-  width: 4rem;
-  height: 4rem;
-  border: 4px solid var(--events-surface);
-  border-radius: 50%;
-  margin-left: -1rem;
-  object-fit: cover;
-}
-
-body.events .section.bento-mosaic.events-services .events-concierge-avatar:first-child {
-  margin-left: 0;
 }
 
 /* —— Weddings feature —— */

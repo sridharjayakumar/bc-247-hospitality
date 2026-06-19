@@ -1,5 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
-import { moveInstrumentation } from '../../scripts/scripts.js';
+import { isEventsPage, moveInstrumentation } from '../../scripts/scripts.js';
 
 function decorateGalleryCard(body) {
   const link = body.querySelector('a');
@@ -13,7 +13,7 @@ function decorateGalleryCard(body) {
 export default function decorate(block) {
   const section = block.closest('.section');
   const isWide = section?.classList.contains('wide');
-  const isEventsVenues = /\/events\/?$/.test(window.location.pathname)
+  const isEventsVenues = isEventsPage()
     && section?.classList.contains('centered');
   if (isWide || isEventsVenues) block.classList.add('gallery');
 
