@@ -1,0 +1,7 @@
+/* Brand Concierge card images: show the full image without cropping.
+   Class name is emitted by Adobe's concierge UI (BEM), so it can't be renamed. */
+/* stylelint-disable-next-line selector-class-pattern */
+.bc-card__image {
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+}
